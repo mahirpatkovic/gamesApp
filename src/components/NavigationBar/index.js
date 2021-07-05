@@ -9,81 +9,69 @@ import { NavLink, useHistory } from 'react-router-dom';
 
 import LoginModal from '../LoginModal';
 import SignupModal from '../SignupModal';
-import useWindowSize from '../../utils/useWindowSize';
 import PersonIcon from '@material-ui/icons/Person';
 import logo from './logo.png';
 import logo2 from './logo2.png';
 import navBox from './navBox.png'
 import './style.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { authActions } from '../../store/auth';
+import { useSelector } from 'react-redux';
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import LogoutModal from '../LogoutModal';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import { useMediaQuery } from 'react-responsive';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        position: 'fixed',
-        zIndex: 1,
-        width: '100%',
-    },
     menuButton: {
-        marginRight: theme.spacing(2),
+        marginRight: theme.spacing(1),
         color: '#ffc107',
-    },
-    loginButton: {
-        marginRight: theme.spacing(2),
-        backgroundColor: 'white',
-        '&:hover': {
-            backgroundColor: '#ffc107'
-        }
-    },
-    title: {
-        flexGrow: 1,
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
-        },
-    },
-    inputRoot: {
-        color: 'inherit',
-    },
-    inputInput: {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            width: '12ch',
-            '&:focus': {
-                width: '20ch',
-            },
-        },
-    },
-    navigationLinks: {
-        color: "black",
-        backgroundColor: "white",
-        textDecoration: "none",
     },
     settingsMenu: {
         color: "black",
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
         zIndex: 3,
-        marginTop: '1.5rem',
+        marginTop: '2rem',
+        marginRight: '7rem',
+        '&:hover': {
+            backgroundColor: 'black',
+            color: 'white'
+        },
+        '@media (min-width: 1024px) and (max-width: 1300px)': {
+            marginRight: '2rem'
+        },
+    },
+    shoppingButton: {
+        color: 'black',
+        zIndex: 3,
+        marginTop: '2rem',
         '&:hover': {
             backgroundColor: 'black',
             color: 'white'
         },
     },
     userButton: {
-        margin: theme.spacing(0.0),
-    }
+        backgroundColor: 'white',
+        zIndex: 3,
+        marginTop: '2rem',
+        marginRight: '8rem',
+        '@media (min-width: 1024px) and (max-width: 1300px)': {
+            marginRight: '1rem'
+        },
 
+    },
+    shoppingResponsive: {
+        color: 'white',
+        marginLeft: '10px',
+    },
+    settingsResponsive: {
+        color: 'white',
+        marginLeft: '20px',
+        marginRight: '-15px',
+    }
 }));
 
 function NavigationBar() {
@@ -93,14 +81,15 @@ function NavigationBar() {
     const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
     const [isSignupModalVisible, setIsSignupModalVisible] = useState(false);
     const [isAlertVisible, setIsAlertVisible] = useState(false);
+    const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
     const [click, setClick] = useState(false);
-    const { width } = useWindowSize();
 
     const isUserLoggedIn = useSelector(state => state.auth.isAuthenticated);
     const currentUser = useSelector(state => state.auth.currentUser);
-    const dispatch = useDispatch();
     const history = useHistory();
-
+    const isDesktopOrLaptop = useMediaQuery({
+        query: '(min-device-width: 1025px)'
+    })
     const handleClick = () => {
         setClick(true);
     }
@@ -144,12 +133,7 @@ function NavigationBar() {
         setIsSignupModalVisible(false);
         closeMenuHandler();
     }
-    const logoutHandler = () => {
-        localStorage.removeItem('userToken');
-        dispatch(authActions.logout());
-        closeMenuHandler();
-        history.push('/');
-    }
+
 
     const openUserProfilePage = () => {
         history.push('/user-profile');
@@ -159,10 +143,19 @@ function NavigationBar() {
         setIsAlertVisible(false);
     }
 
+    const openLogoutModalHandler = () => {
+        setIsLogoutModalVisible(true);
+    }
+
+    const closeLogoutModalHandler = () => {
+        closeMenuHandler();
+        setIsLogoutModalVisible(false);
+    }
+
     return (
-        <div>
-            {(width > 1170 && window.innerWidth > 1170) ? <nav className="navbar">
-                <div className="navBox"><img src={navBox} /></div>
+        <div className="navMaster">
+            {isDesktopOrLaptop ? <nav className="navbar">
+                <div className="navBox"><img alt="navBox" src={navBox} /></div>
                 <Snackbar
                     open={isAlertVisible}
                     autoHideDuration={3000}
@@ -229,25 +222,31 @@ function NavigationBar() {
                             </NavLink>
                         </li>
                     </ul>
-                    {(isUserLoggedIn && currentUser) && <Button
-                        aria-controls="simple-menu"
-                        aria-haspopup="true"
-                        variant="contained"
-                        onClick={openMenuHandler}
-                        style={{ backgroundColor: 'white', zIndex: 3, marginTop: '1.5rem' }}
-                    >
-                        {currentUser.displayName}
-                        <PersonIcon />
-                    </Button>}
-                    {!isUserLoggedIn && <Button
-                        aria-controls="simple-menu"
-                        aria-haspopup="true"
-                        variant="contained"
-                        onClick={openMenuHandler}
-                        className={classes.settingsMenu}
-                    >
-                        <SettingsIcon />
-                    </Button>}
+                    <Button className={classes.shoppingButton} >
+                        <ShoppingCartIcon />
+                    </Button>
+                    {(isUserLoggedIn && currentUser) && <div>
+                        <Button
+                            aria-controls="simple-menu"
+                            aria-haspopup="true"
+                            variant="contained"
+                            onClick={openMenuHandler}
+                            className={classes.userButton}
+                        >
+                            {currentUser.displayName}
+                            <PersonIcon />
+                        </Button>
+                    </div>}
+                    {!isUserLoggedIn && <div>
+                        <Button
+                            aria-controls="simple-menu"
+                            aria-haspopup="true"
+                            onClick={openMenuHandler}
+                            className={classes.settingsMenu}
+                        >
+                            <SettingsIcon />
+                        </Button>
+                    </div>}
                     <Menu
                         id="simple-menu"
                         anchorEl={openMenu}
@@ -258,7 +257,7 @@ function NavigationBar() {
                         {isUserLoggedIn ?
                             <div>
                                 <MenuItem onClick={openUserProfilePage}>My Profile</MenuItem>
-                                <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+                                <MenuItem onClick={openLogoutModalHandler}>Logout</MenuItem>
                             </div> : <div>
                                 <MenuItem onClick={openLoginModalHandler}>LogIn</MenuItem>
                                 <MenuItem onClick={openSignupModalHandler}>SignUp</MenuItem>
@@ -283,19 +282,18 @@ function NavigationBar() {
                             <img alt="logo" src={logo} className="nav-logo" />
                         </NavLink>
 
-                        <Button
-                            size="small"
-                            aria-controls="simple-menu"
-                            aria-haspopup="true"
-                            variant="contained"
-                            style={{ backgroundColor: "white" }}
-                            onClick={openMenuHandler}
-                        >
-                            {(isUserLoggedIn && currentUser) ?
-                                <PersonIcon />
-                                :
-                                <SettingsIcon />}
-                        </Button>
+                        <ShoppingCartIcon className={classes.shoppingResponsive} />
+
+                        {(isUserLoggedIn && currentUser) ?
+                            <PersonIcon
+                                onClick={openMenuHandler}
+                                className={classes.settingsResponsive}
+                            />
+                            :
+                            <SettingsIcon
+                                onClick={openMenuHandler}
+                                className={classes.settingsResponsive}
+                            />}
                         <Menu
                             id="simple-menu"
                             anchorEl={openMenu}
@@ -306,7 +304,7 @@ function NavigationBar() {
                             {isUserLoggedIn ?
                                 <div>
                                     <MenuItem onClick={openUserProfilePage}>My Profile</MenuItem>
-                                    <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+                                    <MenuItem onClick={openLogoutModalHandler}>Logout</MenuItem>
                                 </div> : <div>
                                     <MenuItem onClick={openLoginModalHandler}>LogIn</MenuItem>
                                     <MenuItem onClick={openSignupModalHandler}>SignUp</MenuItem>
@@ -314,20 +312,31 @@ function NavigationBar() {
                             }
                         </Menu>
                     </div>}
+
                 </nav>}
             <MenuDrawer
                 visible={isDrawerOpen}
                 onClose={closeDrawerHandler}
             />
-            {isLoginModalVisible && <LoginModal
-                visible={isLoginModalVisible}
-                onClose={closeLoginModalHandler}
-            />}
-            {isSignupModalVisible && <SignupModal
-                visible={isSignupModalVisible}
-                onClose={closeSignupModalHandler}
-            />}
-        </div>
+            {
+                isLoginModalVisible && <LoginModal
+                    visible={isLoginModalVisible}
+                    onClose={closeLoginModalHandler}
+                />
+            }
+            {
+                isSignupModalVisible && <SignupModal
+                    visible={isSignupModalVisible}
+                    onClose={closeSignupModalHandler}
+                />
+            }
+            {
+                isLogoutModalVisible && <LogoutModal
+                    visible={isLogoutModalVisible}
+                    onClose={closeLogoutModalHandler}
+                />
+            }
+        </div >
     );
 }
 export default NavigationBar;
