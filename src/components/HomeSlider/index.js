@@ -6,7 +6,6 @@ import { Row, Col } from 'antd';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import GameVideoModal from '../GameVideoModal';
 import { useMediaQuery } from 'react-responsive';
-
 import './style.css';
 import 'antd/dist/antd.css';
 
@@ -27,10 +26,10 @@ function HomeSlider(props) {
     }
     return (
         <div >
-            {isDesktopOrLaptop ? <div style={{width: window.innerWidth}}>
+            {isDesktopOrLaptop  && <div>
                 <Row >
                     <Col lg={8} xl={8} style={{ backgroundColor: 'black', color: 'white', zIndex: 2 }}>
-                        <img alt="Need for Speed" src="https://media.contentapi.ea.com/content/dam/eacom/510/common/nfs-510-logo-white.svg" style={{ marginTop: 150, marginLeft: 100 }} />
+                        <img alt="Need for Speed" src="https://media.contentapi.ea.com/content/dam/eacom/510/common/nfs-510-logo-white.svg" style={{ marginTop: 150, marginLeft: 100, zIndex: 2 }} />
                         <Row>
                             <Col>
                                 <div className="readMore">
@@ -57,17 +56,6 @@ function HomeSlider(props) {
                         </div>
                     </Col>
 
-                </Row>
-            </div> : <div>
-                <Row>
-                        <div className="readMore">
-                            <p href="">READ MORE</p>
-                        </div>
-                    
-                        <div className="buyNow">
-                            <p href="">BUY NOW</p>
-                        </div>
-                    <img alt="Need for Speed" src="https://www.thesixthaxis.com/wp-content/uploads/2020/11/NFSHotPursuitRe-Hero500.jpg" style={{width: window.innerWidth}}/>
                 </Row>
             </div>}
 

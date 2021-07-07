@@ -14,7 +14,7 @@ function GameVideoModal(props) {
                 <DialogContent dividers>
                 <iframe width="550" height="315" src="https://www.youtube.com/embed/D6ouHWP0KrY?autoplay=1" 
                 title="YouTube video player" 
-                frameborder="0" allow="accelerometer; autoplay;" allowFullScreen></iframe>
+                frameBorder="0" allow="accelerometer; autoplay;" allowFullScreen></iframe>
                 </DialogContent>
                 <DialogActions>
                     <Button autoFocus onClick={props.onClose} style={{ color: 'white', backgroundColor: 'black' }}>

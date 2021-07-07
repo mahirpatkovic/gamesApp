@@ -6,12 +6,12 @@ import {
 } from "react-router-dom";
 import NavigationBar from "../components/NavigationBar";
 
-import Home from '../pages/Home';
+import Home from '../pages/Home/index';
 import About from '../pages/About';
 import UserProfile from '../pages/UserProfile';
 import Games from "../pages/Games";
 import { useSelector } from "react-redux";
-import GameDetails from "../pages/GameDetails";
+import GameDetails from '../pages/GameDetails/index';
 
 function Dashboard() {
 
