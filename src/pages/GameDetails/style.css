@@ -1,9 +1,19 @@
 .gameSinglePage{
-    margin: 120px auto;
-    text-align: center;
+    margin: 150px auto;
 }
 @media (max-width: 1024px){
     .gameSinglePage{
-        margin: 100px auto;
+        margin: 0 auto;
     }
 }
+
+@media (max-width: 768px){
+    .gameTrailer{
+        width: 100%;
+    }
+}
+/* @media (max-width: 992px){
+    .commentSection{
+        margin-top: 10%;
+    }
+} */
