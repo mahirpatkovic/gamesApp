@@ -1,5 +1,5 @@
-import { CircularProgress } from "@material-ui/core";
 import { useEffect, useState } from "react";
+import Loader from "../components/Loader";
 
 function About() {
     const [isLoading, setIsLoading] = useState(false);
@@ -17,7 +17,7 @@ function About() {
     }, []);
     return (
         <div>
-            {isLoading ? <CircularProgress /> : <p>About Page</p>}
+            {isLoading ? <Loader /> : <p>About Page</p>}
         </div>
     )
 }

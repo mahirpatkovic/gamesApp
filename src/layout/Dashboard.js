@@ -12,6 +12,7 @@ import UserProfile from '../pages/UserProfile';
 import Games from "../pages/Games";
 import { useSelector } from "react-redux";
 import GameDetails from '../pages/GameDetails/index';
+import Contact from "../pages/Contact";
 
 function Dashboard() {
 
@@ -31,13 +32,17 @@ function Dashboard() {
                     <Route path="/user-profile" exact>
                         <UserProfile />
                     </Route>
+                    <Route path="/contact" exact>
+                        <Contact />
+                    </Route>
                     <Route path="/games" exact>
                         {!isUserLoggedIn ? <Redirect to="/" /> : <Games />}
                     </Route>
                     <Route path="/:gameId" exact>
                         <GameDetails />
                     </Route>
-                    <Route path="*">
+                    
+                    <Route path="*" exact>
                         <Redirect to="/" />
                     </Route>
                 </Switch>

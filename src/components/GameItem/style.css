@@ -7,7 +7,49 @@
 		width: 300px !important;
 	}
 }
+.gameOverlay{
+	position: absolute;
+ 	bottom: 100%;
+  	left: 0;
+  	right: 0;
+  	background-color: #ffc107;
+  	overflow: hidden;
+  	opacity: 0.5;
+  	width: 100%;
+  	height: 0;
+  	transition: .5s ease;
+}
+.game:hover .gameOverlay{
+	bottom: 20%;
+	height: 80%;
+}
+.gameTextOverlay{
+	position: absolute;
+	top: 80px;
+	left: 15%;
+	opacity: 0;
+	transition: 0.7s ease;
+	width: 270px;
+}
+.gameTextOverlay .p0{
+	font-family: 'Segoe UI Black';
+	color: white;
+	font-size: 17px;
+	margin-left: 10px;
+	text-align: center;
+	width: 180px;
+}
+.gameTextOverlay .p1{
+	font-family: sans-serif;
+	color: white;
+	font-size: 17px;
+	margin-left: -20px;
+	width: 270px;
+}
 
+.game:hover .gameTextOverlay{
+	opacity: 1;
+}
 
 /* 
 .cod{

@@ -1,10 +1,10 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Dashboard from './layout/Dashboard';
 import axios from 'axios';
-import { CircularProgress } from '@material-ui/core';
 
 import { useDispatch } from 'react-redux';
 import { authActions } from './store/auth';
+import Loader from "./components/Loader";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -20,11 +20,11 @@ function App() {
           setIsLoading(false);
         })
     }
-    setIsLoading(false)
+    setIsLoading(false);
   }, [dispatch]);
   return (
     <Fragment>
-      {isLoading ? <CircularProgress style={{ margin: "20% 30% 0 45%" }} size={50} /> :
+      {isLoading ? <Loader /> :
         <Dashboard />}
     </Fragment>
   );
