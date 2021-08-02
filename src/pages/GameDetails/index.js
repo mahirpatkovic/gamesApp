@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loader from '../../components/Loader';
-import { Grid, Segment, Button, Icon, Label, Embed } from 'semantic-ui-react';
+import { Grid, Segment, Button, Icon, Label, Embed, ButtonGroup } from 'semantic-ui-react';
 import './style.css';
 import ImageSlider from "./ImageSlider";
 import TableInfo from "./TableInfo";
@@ -10,7 +10,9 @@ import TableLanguageInfo from "./TableLanguageInfo";
 import GameReqs from "./GameReqs";
 import CommentSection from "./CommentSection";
 import { useDispatch } from "react-redux";
-import {cartActions} from '../../store/cart';
+import { cartActions } from '../../store/cart';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 function GameDetails() {
     const { gameId } = useParams();
@@ -25,6 +27,7 @@ function GameDetails() {
     const [portugese, setPortugese] = useState([]);
     const [spanish, setSpanish] = useState([]);
     const [turkish, setTurkish] = useState([]);
+    const [gameQuantity, setGameQuantity] = useState(1);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -51,10 +54,11 @@ function GameDetails() {
             .catch(err => {
                 console.error(err);
             })
+        
     }, [gameId]);
 
-    const addGameToCartHandler = (game) =>{
-        dispatch(cartActions.addToCart(game));
+    const addGameToCartHandler = ({ game, gameQuantity }) => {
+        dispatch(cartActions.addToCart({game, gameQuantity}));
     }
     return (
         <div style={{ display: 'flex' }}>
@@ -67,7 +71,7 @@ function GameDetails() {
                         <Grid.Column mobile={12} tablet={8} computer={4}>
                             <Grid.Row columns={2} style={{ marginTop: 20, marginLeft: 0 }}>
                                 <Grid.Column>
-                                    <Button as='div' labelPosition='right' onClick={() => addGameToCartHandler(game)}>
+                                    <Button as='div' labelPosition='right' onClick={() => addGameToCartHandler({game: game, gameQuantity})} >
                                         <Button color='black'>
                                             <Icon name='shop' />
                                         </Button>
@@ -80,12 +84,31 @@ function GameDetails() {
                                     <Label as='a' tag size="big">${Number(game.price).toFixed(2)}</Label>
                                 </Grid.Column>
                             </Grid.Row>
+                            <Grid.Row columns={2} style={{ marginTop: 5, marginLeft: 0 }}>
+                                <ButtonGroup size="small">
+                                    <Button
+                                        aria-label="reduce"
+                                        onClick={() => gameQuantity > 1 && setGameQuantity(gameQuantity - 1)}
+                                    >
+                                        <RemoveIcon fontSize="small" />
+                                    </Button>
+                                    <Button color="vk">
+                                        {gameQuantity}
+                                    </Button>
+                                    <Button
+                                        aria-label="increase"
+                                        onClick={() => setGameQuantity(gameQuantity + 1)}
+                                    >
+                                        <AddIcon fontSize="small" />
+                                    </Button>
+                                </ButtonGroup>
+                            </Grid.Row>
                             <Segment>
                                 <TableInfo game={game} />
                             </Segment>
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row centered>
+                    <Grid.Row centered style={{ marginLeft: 0 }}>
                         <Grid.Column mobile={16} tablet={12} computer={6}>
                             <Embed
                                 autoplay={true}
@@ -108,7 +131,7 @@ function GameDetails() {
                             />
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row centered>
+                    <Grid.Row centered style={{ marginLeft: 0 }}>
                         <Grid.Column only={'computer'} computer={6}>
                             <Segment>
                                 <h4>System Requirements</h4>
@@ -120,7 +143,7 @@ function GameDetails() {
                                 />
                             </Segment>
                         </Grid.Column>
-                        <Grid.Column mobile={10} tablet={12} computer={4}>
+                        <Grid.Column mobile={14} tablet={12} computer={4}>
                             <CommentSection gameId={game.id} comments={game.comments} />
                         </Grid.Column>
                     </Grid.Row>

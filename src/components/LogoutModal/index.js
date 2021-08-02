@@ -3,14 +3,17 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { authActions } from '../../store/auth';
-
+import { notification } from 'antd';
 import { makeStyles } from '@material-ui/core/styles';
+import { Image } from 'semantic-ui-react';
+import logo from './logo.png';
+
 
 const useStyles = makeStyles((theme) => ({
-    logoutButton:{
+    logoutButton: {
         color: 'white',
         backgroundColor: 'black',
         '&:hover': {
@@ -19,11 +22,26 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 function LogoutModal(props) {
+    const user = useSelector(state => state.auth.currentUser);
 
     const dispatch = useDispatch();
     const history = useHistory();
     const classes = useStyles();
     const logoutHandler = () => {
+        let startTime = new Date().getTime();
+        let interval = setInterval(() => {
+            props.onLoad(true);
+            if (new Date().getTime() - startTime > 1000) {
+                props.onLoad(false);
+                console.log(user);
+                notification.open({
+                    message: `Goodbye ${user.displayName}`,
+                    icon: <Image src={logo} wrapped style={{ width: 30 }} />,
+                });
+                clearInterval(interval);
+                return;
+            }
+        }, 0);
         localStorage.removeItem('userToken');
         dispatch(authActions.logout());
         history.push('/');

@@ -7,6 +7,9 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../../store/auth';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import { notification } from 'antd';
+import { Image } from 'semantic-ui-react';
+import logo from './logo.png';
 
 const useStyles = makeStyles((theme) => ({
     singupButton: {
@@ -50,7 +53,20 @@ function SignupModal(props) {
                     dispatch(authActions.setUser(res.data));
                     localStorage.setItem('userToken', res.data.idToken);
                     props.onClose();
-                    history.push('/');
+                    // history.push('/');
+                    let startTime = new Date().getTime();
+                    let interval = setInterval(() => {
+                        props.onLoad(true);
+                        if (new Date().getTime() - startTime > 1000) {
+                            props.onLoad(false);
+                            notification.open({
+                                message: `Welcome ${res.data.displayName}`,
+                                icon: <Image src={logo} wrapped style={{ width: 30 }} />,
+                            });
+                            clearInterval(interval);
+                            return;
+                        }
+                    }, 0);
                 }
             })
             .catch(() => {
