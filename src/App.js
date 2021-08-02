@@ -17,6 +17,7 @@ function App() {
         .then(res => {
           dispatch(authActions.login());
           dispatch(authActions.setUser(res.data));
+          console.log(res.data);
           setIsLoading(false);
         })
     }

@@ -15,7 +15,6 @@ function Home() {
         axios.get(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games.json`)
             .then(res => {
                 setGames(res.data);
-                console.log(res.data)
                 setIsLoading(false);
             })
             .catch(err => {

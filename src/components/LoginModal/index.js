@@ -4,9 +4,12 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../../store/auth';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import { notification } from 'antd';
+import { Image } from 'semantic-ui-react';
+import logo from './logo.png';
 
 const useStyles = makeStyles((theme) => ({
     loginButton: {
@@ -33,7 +36,7 @@ function LoginModal(props) {
     const [isAlertVisible, setIsAlertVisible] = useState(false);
     const classes = useStyles();
     const dispatch = useDispatch();
-    const history = useHistory();
+    // const history = useHistory();
     const formRef = useRef();
 
     const handleInputChange = (val) => (event) => {
@@ -48,7 +51,21 @@ function LoginModal(props) {
                     dispatch(authActions.setUser(res.data));
                     localStorage.setItem('userToken', res.data.idToken);
                     props.onClose();
-                    history.push('/');
+                    let startTime = new Date().getTime();
+                    let interval = setInterval(() => {
+                        props.onLoad(true);
+                        if (new Date().getTime() - startTime > 1000) {
+                            props.onLoad(false);
+                            notification.open({
+                                message: `Welcome ${res.data.displayName}`,
+                                icon: <Image src={logo} wrapped style={{ width: 30 }} />,
+                            });
+                            clearInterval(interval);
+                            return;
+                        }
+                    }, 0);
+
+                    // history.push('/');
                 }
             })
             .catch(() => {
@@ -64,7 +81,7 @@ function LoginModal(props) {
                 onClose={props.onClose}
                 open={props.visible}
             >
-                <DialogContent dividers             >
+                <DialogContent dividers>
 
                     <Grid align='center'>
                         <Avatar style={{ backgroundColor: 'black' }}><LockOutlinedIcon /></Avatar>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IconButton, Button, Menu, MenuItem } from '@material-ui/core';
+import { IconButton, Button, Menu, MenuItem, Badge } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -14,12 +14,14 @@ import logo from './logo.png';
 import logo2 from './logo2.png';
 import navBox from './navBox.png'
 import './style.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import LogoutModal from '../LogoutModal';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { useMediaQuery } from 'react-responsive';
+import ShoppingCartHoverModal from '../ShoppingCartHoverModal';
+import { cartActions } from '../../store/cart';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -29,13 +31,20 @@ const useStyles = makeStyles((theme) => ({
     menuButton: {
         marginRight: theme.spacing(1),
         color: '#ffc107',
+        '@media (max-width: 1024px)': {
+            marginTop: '-2rem'
+        },
+        '@media (max-width: 540px)': {
+            marginTop: '-3rem',
+        },
+
     },
     settingsMenu: {
         color: "black",
         backgroundColor: 'transparent',
         zIndex: 3,
         marginTop: '2rem',
-        marginRight: '7rem',
+        marginRight: '15rem',
         '&:hover': {
             backgroundColor: 'black',
             color: 'white'
@@ -57,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: 'white',
         zIndex: 3,
         marginTop: '2rem',
-        marginRight: '8rem',
+        marginRight: '13rem',
         '@media (min-width: 1024px) and (max-width: 1300px)': {
             marginRight: '1rem'
         },
@@ -66,15 +75,23 @@ const useStyles = makeStyles((theme) => ({
     shoppingResponsive: {
         color: 'white',
         marginLeft: '10px',
+        marginTop: '-2rem',
+        '@media (max-width: 540px)': {
+            marginTop: '-3rem'
+        },
     },
     settingsResponsive: {
         color: 'white',
         marginLeft: '20px',
         marginRight: '-15px',
+        marginTop: '-2rem',
+        '@media (max-width: 540px)': {
+            marginTop: '-3rem',
+        },
     }
 }));
 
-function NavigationBar() {
+function NavigationBar(props) {
     const classes = useStyles();
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [openMenu, setOpenMenu] = useState(null);
@@ -83,10 +100,13 @@ function NavigationBar() {
     const [isAlertVisible, setIsAlertVisible] = useState(false);
     const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
     const [click, setClick] = useState(false);
-
+    const [isShoppingCartModalVisible, setIsShoppingCartModalVisible] = useState(false);
     const isUserLoggedIn = useSelector(state => state.auth.isAuthenticated);
     const currentUser = useSelector(state => state.auth.currentUser);
+    const cartGames = useSelector(state => state.cart.addedGamesToCart);
+    const isGameAlreadyInCart = useSelector(state => state.cart.gameAlreadyInCart);
     const history = useHistory();
+    const dispatch = useDispatch();
     const isDesktopOrLaptop = useMediaQuery({
         query: '(min-device-width: 1025px)'
     })
@@ -152,6 +172,26 @@ function NavigationBar() {
         setIsLogoutModalVisible(false);
     }
 
+    const openShoppingCartHoverModal = () => {
+        if (cartGames.length > 0) {
+            setIsShoppingCartModalVisible(true);
+        }
+    }
+    const closeShoppingCartHoverModal = () => {
+        setIsShoppingCartModalVisible(false);
+        if (cartGames.length === 0) {
+            setIsShoppingCartModalVisible(false);
+        }
+    }
+
+    const handleCloseGameAlreadyInCart = () => {
+        dispatch(cartActions.isGameAlredyInCartHandleClose());
+    }
+
+    const handleLoaderShow = (isOpen) => {
+        props.onLoad(isOpen);
+    }
+
     return (
         <div className="navMaster">
             {isDesktopOrLaptop ? <nav className="navbar">
@@ -171,6 +211,20 @@ function NavigationBar() {
                         Please Register!
                     </Alert>
                 </Snackbar>
+                {isGameAlreadyInCart && <Snackbar
+                    open={isGameAlreadyInCart}
+                    autoHideDuration={3000}
+                    onClose={handleCloseGameAlreadyInCart}
+                    anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                >
+                    <Alert
+                        onClose={handleCloseGameAlreadyInCart}
+                        severity="warning"
+                        style={{ marginTop: 50, backgroundColor: 'black' }}
+                    >
+                        Game is already added to the cart! Cart Updated.
+                    </Alert>
+                </Snackbar>}
                 <div className="nav-container">
                     <NavLink exact to="/" className="nav-logo" >
                         <img alt="logo2" src={logo2} className="nav-logo2" />
@@ -222,8 +276,10 @@ function NavigationBar() {
                             </NavLink>
                         </li>
                     </ul>
-                    <Button className={classes.shoppingButton} >
-                        <ShoppingCartIcon />
+                    <Button className={classes.shoppingButton} onClick={openShoppingCartHoverModal}>
+                        <Badge color="secondary" badgeContent={cartGames.length}>
+                            <ShoppingCartIcon />
+                        </Badge>
                     </Button>
                     {(isUserLoggedIn && currentUser) && <div>
                         <Button
@@ -281,8 +337,9 @@ function NavigationBar() {
                             <img alt="logo2" src={logo2} className="nav-logo2" />
                             <img alt="logo" src={logo} className="nav-logo" />
                         </NavLink>
-
-                        <ShoppingCartIcon className={classes.shoppingResponsive} />
+                        <Badge color="secondary" className={classes.shoppingResponsive} badgeContent={cartGames.length}>
+                            <ShoppingCartIcon onClick={openShoppingCartHoverModal} />
+                        </Badge>
 
                         {(isUserLoggedIn && currentUser) ?
                             <PersonIcon
@@ -322,6 +379,7 @@ function NavigationBar() {
                 isLoginModalVisible && <LoginModal
                     visible={isLoginModalVisible}
                     onClose={closeLoginModalHandler}
+                    onLoad={handleLoaderShow}
                 />
             }
             {
@@ -334,8 +392,13 @@ function NavigationBar() {
                 isLogoutModalVisible && <LogoutModal
                     visible={isLogoutModalVisible}
                     onClose={closeLogoutModalHandler}
+                    onLoad={handleLoaderShow}
                 />
             }
+            {isShoppingCartModalVisible && <ShoppingCartHoverModal
+                visible={isShoppingCartModalVisible}
+                onClose={closeShoppingCartHoverModal}
+            />}
         </div >
     );
 }

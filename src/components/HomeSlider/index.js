@@ -8,10 +8,12 @@ import GameVideoModal from '../GameVideoModal';
 import { useMediaQuery } from 'react-responsive';
 import './style.css';
 import 'antd/dist/antd.css';
+import { useHistory } from 'react-router-dom';
 
 function HomeSlider(props) {
     const [isGameVideoModalVisible, setIsGameVideoModalVisible] = useState(false);
     const [isOpenVideoButtonClicked, setIsOpenVideoButtonClicked] = useState(true);
+    const history = useHistory();
     const isDesktopOrLaptop = useMediaQuery({
         query: '(min-device-width: 1025px)'
     })
@@ -24,6 +26,10 @@ function HomeSlider(props) {
         setIsGameVideoModalVisible(false);
         setIsOpenVideoButtonClicked(true);
     }
+
+    const openGameHandler = () =>{
+        history.push('/g3')
+    }
     return (
         <div >
             {isDesktopOrLaptop  && <div>
@@ -33,14 +39,14 @@ function HomeSlider(props) {
                         <Row>
                             <Col>
                                 <div className="readMore">
-                                    <p href="">READ MORE</p>
+                                    <p onClick={openGameHandler}>READ MORE</p>
                                     <div className="readMoreOverlay">
                                     </div>
                                 </div>
                             </Col>
                             <Col>
                                 <div className="buyNow">
-                                    <p href="">BUY NOW</p>
+                                    <p onClick={openGameHandler}>BUY NOW</p>
                                     <div className="buyNowOverlay">
                                     </div>
                                 </div>
