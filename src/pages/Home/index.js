@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'
 import HomeSlider from "../../components/HomeSlider";
 import GameItem from '../../components/GameItem';
 import WaveHomeUp from '../../components/WaveHomeUp';
@@ -8,18 +7,17 @@ import WaveHomeDown from '../../components/WaveHomeDown';
 import Loader from '../../components/Loader';
 import './style.css';
 function Home() {
-    const [games, setGames] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
-        setIsLoading(true);
-        axios.get(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games.json`)
-            .then(res => {
-                setGames(res.data);
+        let startTime = new Date().getTime();
+        let interval = setInterval(() => {
+            setIsLoading(true);
+            if (new Date().getTime() - startTime > 1000) {
                 setIsLoading(false);
-            })
-            .catch(err => {
-                console.error(err);
-            })
+                clearInterval(interval);
+                return;
+            }
+        }, 0);
     }, []);
     return (
         <div>
@@ -29,7 +27,7 @@ function Home() {
                     <WaveHomeUp />
                 </div>
                 <div className="gameItems">
-                    <GameItem games={games} />
+                    <GameItem />
                 </div>
                 <div style={{ marginTop: -370 }}>
                     <WaveHomeDown />

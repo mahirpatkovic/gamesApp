@@ -1,15 +1,16 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { Icon, Card, Image } from 'semantic-ui-react';
 import './style.css';
 
-function GameItem(props) {
-
+function GameItem() {
+    const games = useSelector(state => state.games.games);
     return (
         <div style={{ margin: '100px auto' }}>
             <Card.Group itemsPerRow={3} stackable={true} doubling={true} centered>
-                {props.games.map(game => <Card key={game.id} className="card" style={{ width: 300 }}>
+                {games.map(game => <Card key={game.id} className="card" style={{ width: 300 }}>
                     <div className="game">
                         <Image src={game.poster} wrapped style={{ width: 300 }} />
                         <div className="gameOverlay"></div>

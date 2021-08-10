@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { IconButton, Button, Menu, MenuItem, Badge } from '@material-ui/core';
+import React, { useEffect, useState, useRef } from 'react';
+import { IconButton, Button, Menu, MenuItem, Badge, Grid } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -22,6 +22,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { useMediaQuery } from 'react-responsive';
 import ShoppingCartHoverModal from '../ShoppingCartHoverModal';
 import { cartActions } from '../../store/cart';
+import { Icon, Search,  Header, Segment } from 'semantic-ui-react';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -52,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
         '@media (min-width: 1024px) and (max-width: 1300px)': {
             marginRight: '2rem'
         },
+        '@media (min-width: 1300px) and (max-width: 1500px)': {
+            marginRight: '1rem'
+        },
     },
     shoppingButton: {
         color: 'black',
@@ -61,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: 'black',
             color: 'white'
         },
+        
     },
     userButton: {
         backgroundColor: 'white',
@@ -69,6 +74,9 @@ const useStyles = makeStyles((theme) => ({
         marginRight: '13rem',
         '@media (min-width: 1024px) and (max-width: 1300px)': {
             marginRight: '1rem'
+        },
+        '@media (min-width: 1300px) and (max-width: 1500px)': {
+            marginRight: '5rem'
         },
 
     },
@@ -101,6 +109,10 @@ function NavigationBar(props) {
     const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
     const [click, setClick] = useState(false);
     const [isShoppingCartModalVisible, setIsShoppingCartModalVisible] = useState(false);
+    const [isSearcBarVisible, setIsSearchBarVisible] = useState(false);
+    const [filteredGames, setFilteredGames] = useState([]);
+    const [isIconLoading, setIsIconLoading] = useState(false);
+    const games = useSelector(state => state.games.games);
     const isUserLoggedIn = useSelector(state => state.auth.isAuthenticated);
     const currentUser = useSelector(state => state.auth.currentUser);
     const cartGames = useSelector(state => state.cart.addedGamesToCart);
@@ -110,6 +122,19 @@ function NavigationBar(props) {
     const isDesktopOrLaptop = useMediaQuery({
         query: '(min-device-width: 1025px)'
     })
+    const ref = useRef(null);
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside, true);
+        return () => {
+            document.removeEventListener('click', handleClickOutside, true);
+        };
+    }, []);
+
+    const handleClickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+            setIsSearchBarVisible(false);
+        }
+    };
     const handleClick = () => {
         setClick(true);
     }
@@ -154,7 +179,6 @@ function NavigationBar(props) {
         closeMenuHandler();
     }
 
-
     const openUserProfilePage = () => {
         history.push('/user-profile');
         closeMenuHandler();
@@ -190,6 +214,53 @@ function NavigationBar(props) {
 
     const handleLoaderShow = (isOpen) => {
         props.onLoad(isOpen);
+    }
+
+    const handleInputSearchChange = (event) => {
+        let value = event.target.value.toLowerCase();
+        let charValue = [];
+        for (let i = 0; i < value.length; i++) {
+            charValue.push(value[i]);
+        }
+        // const newCharValue = charValue.join('');
+        // console.log('value', charValue, charValue.length)
+        let result = [];
+        let tmpGames = [];
+        for (let gm of games) {
+            gm = {
+                id: gm.id,
+                title: gm.name,
+                image: gm.poster,
+                price: '$' + gm.price.toFixed(2),
+            }
+            tmpGames.push(gm);
+        }
+        // console.log('modified', tmpGames)
+        let gameValue = [];
+
+        for (let gm of tmpGames) {
+            const gmtmp = gm.title.toLowerCase().split('');
+            gameValue.push(gmtmp);
+        }
+        for (let gm of gameValue) {
+            if (JSON.stringify(gm.slice(0, charValue.length)) === JSON.stringify(charValue)) {
+                const tmp = gm.join('');
+                for (let tmpGm of tmpGames) {
+                    if (tmpGm.title.toLowerCase() === tmp) {
+                        result.push(tmpGm)
+                    }
+                }
+            }
+        }
+
+        // console.log("result", result)
+        setFilteredGames(result);
+        setIsIconLoading(false);
+    }
+
+    const handleGameSelect = (e, value) => {
+        history.push(`/${value.result.id}`);
+        setIsSearchBarVisible(false);
     }
 
     return (
@@ -276,6 +347,19 @@ function NavigationBar(props) {
                             </NavLink>
                         </li>
                     </ul>
+                    {!isSearcBarVisible && <Icon name='search' color='black' className="searchIcon" onClick={() => setIsSearchBarVisible(true)} />}
+                    <div ref={ref}>
+                        <Grid>
+                            {isSearcBarVisible && <Search style={{ zIndex: 5, marginTop: '2rem' }}
+                                loading={isIconLoading}
+                                size='small'
+                                onSearchChange={handleInputSearchChange}
+                                results={filteredGames}
+                                onResultSelect={(e, data) => handleGameSelect(e,data)}
+                                className="searchBar"
+                            />}
+                        </Grid>
+                    </div>
                     <Button className={classes.shoppingButton} onClick={openShoppingCartHoverModal}>
                         <Badge color="secondary" badgeContent={cartGames.length}>
                             <ShoppingCartIcon />
@@ -337,6 +421,19 @@ function NavigationBar(props) {
                             <img alt="logo2" src={logo2} className="nav-logo2" />
                             <img alt="logo" src={logo} className="nav-logo" />
                         </NavLink>
+                        {!isSearcBarVisible && <Icon name='search' color='white' className="searchIcon" onClick={() => setIsSearchBarVisible(true)} />}
+                        <div ref={ref}>
+                            <Grid>
+                                {isSearcBarVisible && <Search style={{ zIndex: 5, marginTop: '-2rem', width: '100px' }}
+                                    loading={isIconLoading}
+                                    size='mini'
+                                    onSearchChange={handleInputSearchChange}
+                                    results={filteredGames}
+                                    onResultSelect={(e, data) => handleGameSelect(e,data)}
+                                    className="searchBar"
+                                />}
+                            </Grid>
+                        </div>
                         <Badge color="secondary" className={classes.shoppingResponsive} badgeContent={cartGames.length}>
                             <ShoppingCartIcon onClick={openShoppingCartHoverModal} />
                         </Badge>
