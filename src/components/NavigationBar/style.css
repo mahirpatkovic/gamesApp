@@ -137,6 +137,22 @@
     z-index: 2;
   }
 }
+/* @media  (min-width: 1430px) and (max-width: 1500px){
+  .nav-menu{
+    margin-right: -1.5rem;
+  }
+}
+
+@media  (min-width: 1300px) and (max-width: 1430px){
+  .nav-menu{
+    margin-right: -1.5rem;
+  }
+}
+@media  (min-width: 1150px) and (max-width: 1300px){
+  .nav-menu{
+    margin-right: -1.5rem;
+  }
+} */
 .nav-item {
   line-height: 40px;
   margin-right: 1rem;
@@ -173,6 +189,29 @@
 }
 .menuButton{
   color: #ffc107;
+}
+.searchIcon{
+  z-index: 5;
+  position: relative;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+}
+@media  (min-width: 541px) and (max-width: 1024px){
+  .searchIcon{
+       top: -1rem;
+  }
+
+}
+
+@media  (max-width: 540px){
+  .searchIcon{
+    top: -1.5rem;
+  }
+  .searchBar{
+    width: 100%;
+    top: -0.5rem
+  }
 }
 
 /* .navMaster{

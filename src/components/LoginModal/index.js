@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Grid, Avatar, TextField, Button, Dialog, DialogContent, DialogActions } from '@material-ui/core'
+import { Grid, Avatar, TextField, Button, Dialog, DialogContent, DialogActions, Typography } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
@@ -34,6 +34,7 @@ function LoginModal(props) {
         password: '',
     })
     const [isAlertVisible, setIsAlertVisible] = useState(false);
+    const [isPasswordResetAlertVisible, setIsPasswordResetAlertVisible] = useState(false);
     const classes = useStyles();
     const dispatch = useDispatch();
     // const history = useHistory();
@@ -70,7 +71,19 @@ function LoginModal(props) {
             })
             .catch(() => {
                 setIsAlertVisible(true);
+                setIsPasswordResetAlertVisible(false);
                 formRef.current.reportValidity();
+            })
+    }
+
+    const resetPasswordHandler = () =>{
+        axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyCrEB1r3iKHWXKZ53Cz-7G7uUpwOjoF2yM`, {requestType: "PASSWORD_RESET", email: values.email})
+            .then(() =>{
+                console.log('Email sent')
+            })
+            .catch(err =>{
+                console.error(err)
+                setIsPasswordResetAlertVisible(true);
             })
     }
 
@@ -91,6 +104,10 @@ function LoginModal(props) {
                         <AlertTitle>Warning</AlertTitle>
                         Login failed — <strong> Try again !</strong>
                     </Alert>}
+                    {isPasswordResetAlertVisible && <Alert severity="error">
+                        <AlertTitle>Warning</AlertTitle>
+                        Email field cannot be empty — <strong> Try again !</strong>
+                    </Alert>}
                     <form ref={formRef}>
                         <TextField
                             id="email"
@@ -109,10 +126,11 @@ function LoginModal(props) {
                             type='password'
                             fullWidth
                             required
-                            style={{ marginTop: 10 }}
+                            style={{ marginTop: 10, marginBottom: 10 }}
                             onChange={handleInputChange('password')}
                         />
                     </form>
+                    <Typography onClick={resetPasswordHandler} style={{cursor: 'pointer', color: 'black'}}><strong>Forgot password?</strong> </Typography>
                     <Grid align='center'>
                         <Button
                             type='submit'

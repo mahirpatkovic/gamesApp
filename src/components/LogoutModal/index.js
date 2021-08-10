@@ -33,7 +33,6 @@ function LogoutModal(props) {
             props.onLoad(true);
             if (new Date().getTime() - startTime > 1000) {
                 props.onLoad(false);
-                console.log(user);
                 notification.open({
                     message: `Goodbye ${user.displayName}`,
                     icon: <Image src={logo} wrapped style={{ width: 30 }} />,
