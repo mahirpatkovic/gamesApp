@@ -1,15 +1,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Grid, Form, Accordion, Button, Radio, Message, Icon } from "semantic-ui-react";
-import { authActions } from "../store/auth";
+import { authActions } from "../../store/auth";
+import { useMediaQuery } from 'react-responsive';
 import { notification } from 'antd';
+import './style.css';
 
 function UserProfile() {
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [isDisabled, setIsDisabled] = useState(true);
-    const isUserLoggedIn = useSelector(state => state.auth.isAuthenticated);
     const [userValues, setUserValues] = useState({
         email: '',
         username: '',
@@ -20,7 +21,9 @@ function UserProfile() {
     })
     const [isErrorMessageVisible, setIsErrorMessageVisible] = useState(false);
     const dispatch = useDispatch();
-
+    const isDesktopOrMobile = useMediaQuery({
+        query: '(max-device-width: 1024px)'
+    })
     useEffect(() => {
         const userToken = localStorage.getItem('userToken');
         if (userToken) {
@@ -105,78 +108,80 @@ function UserProfile() {
 
     return (
         <div style={{ display: 'flex' }}>
-            <Grid columns={2} container style={{ width: '100%', marginTop: -50 }}>
-                <Grid.Row>
-                    <Grid.Column floated='right' style={{ marginRight: '10rem' }}>
-                        <Radio toggle label='Edit Profile' onChange={handleDisableEdit} />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Column>
-                    <Form >
-                        <Form.Field>
-                            <label>Username</label>
-                            <input
-                                id='username'
-                                placeholder='Username'
-                                defaultValue={userValues && userValues.username} disabled={isDisabled}
-                                onChange={handleInputChange('username')}
+            <div className="userProfile">
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Radio toggle label='Edit Profile' onChange={handleDisableEdit} />
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Column>
+                        <Form >
+                            <Form.Field>
+                                <label>Username</label>
+                                <input
+                                    id='username'
+                                    placeholder='Username'
+                                    defaultValue={userValues && userValues.username} disabled={isDisabled}
+                                    onChange={handleInputChange('username')}
+                                />
+                            </Form.Field>
+                            <Form.Field>
+                                <label>Email</label>
+                                <input
+                                    id='email'
+                                    placeholder='Email'
+                                    defaultValue={userValues && userValues.email}
+                                    disabled={isDisabled}
+                                    onChange={handleInputChange('email')}
+                                />
+                            </Form.Field>
+                        </Form>
+                        <Accordion styled style={{marginTop: 20, width: isDesktopOrMobile && '100%'}}>
+                            <Accordion.Title
+                                content='Password Change'
+                                onClick={onClickOpenAccordion}
+                                index={activeIndex}
                             />
-                        </Form.Field>
-                        <Form.Field>
-                            <label>Email</label>
-                            <input
-                                id='email'
-                                placeholder='Email'
-                                defaultValue={userValues && userValues.email}
-                                disabled={isDisabled}
-                                onChange={handleInputChange('email')}
-                            />
-                        </Form.Field>
-                    </Form>
-                    <Accordion styled style={{ marginTop: 20 }}>
-                        <Accordion.Title
-                            content='Password Change'
-                            onClick={onClickOpenAccordion}
-                            index={activeIndex}
-                        />
-                        <Accordion.Content active={activeIndex}>
-                            <Form error>
+                            <Accordion.Content active={activeIndex}>
+                                <Form error>
 
-                                <Form.Field>
-                                    <label>New password</label>
-                                    <input
-                                        id='newPassword'
-                                        placeholder='New password'
-                                        onChange={onChangePasswordHandler}
-                                        value={passwordValues.newPassword}
-                                    />
-                                </Form.Field>
-                                <Form.Field
-                                >
-                                    <label>Repeat new password</label>
-                                    <input placeholder='Repeat new password'
-                                        id='repNewPassword'
-                                        onChange={onChangePasswordHandler}
-                                        value={passwordValues.repNewPassword}
-                                    />
-                                </Form.Field>
-                                {isErrorMessageVisible && <Message
-                                    error
-                                    header='Passwords do not match'
-                                    content='Please try again!!!'
-                                />}
-                                {/* <Message
+                                    <Form.Field>
+                                        <label>New password</label>
+                                        <input
+                                            id='newPassword'
+                                            placeholder='New password'
+                                            onChange={onChangePasswordHandler}
+                                            value={passwordValues.newPassword}
+                                            type='password'
+                                        />
+                                    </Form.Field>
+                                    <Form.Field
+                                    >
+                                        <label>Repeat new password</label>
+                                        <input placeholder='Repeat new password'
+                                            id='repNewPassword'
+                                            onChange={onChangePasswordHandler}
+                                            value={passwordValues.repNewPassword}
+                                            type='password'
+                                        />
+                                    </Form.Field>
+                                    {isErrorMessageVisible && <Message
+                                        error
+                                        header='Passwords do not match'
+                                        content='Please try again!!!'
+                                    />}
+                                    {/* <Message
                                     error
                                     header='This is your current password'
                                     content='Please try again!!!'
                                 /> */}
-                                <Button secondary onClick={confirmUpdateHandler} disabled={isConfirmButtonDisabled}>Confirm</Button>
-                            </Form>
-                        </Accordion.Content>
-                    </Accordion>
-                    <Button secondary onClick={updateProfileHandler} disabled={isDisabled} style={{ marginTop: 20 }}>Update profile</Button>
-                </Grid.Column>
-            </Grid>
+                                    <Button secondary onClick={confirmUpdateHandler} disabled={isConfirmButtonDisabled}>Confirm</Button>
+                                </Form>
+                            </Accordion.Content>
+                        </Accordion>
+                        <Button secondary onClick={updateProfileHandler} disabled={isDisabled} style={{ marginTop: 20 }}>Update profile</Button>
+                    </Grid.Column>
+            </div>
 
         </div>
     )

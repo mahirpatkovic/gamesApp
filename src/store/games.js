@@ -9,7 +9,6 @@ const gamesSlice = createSlice({
     reducers: {
         fetchGames(state, {payload: games}) {
             state.games = games;
-            console.log(games);
         },
     },
 });

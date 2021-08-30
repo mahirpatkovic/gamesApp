@@ -19,6 +19,27 @@ function App() {
           dispatch(authActions.setUser(res.data));
           console.log(res.data);
           setIsLoading(false);
+          axios.get(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/userDetails.json`)
+            .then(rs => {
+              let transformedData = [];
+              for (let key in rs.data) {
+                transformedData.push(rs.data[key]);
+              }
+              for (let user of transformedData) {
+                if (user.authDetails.email === res.data.email) {
+                  dispatch(authActions.setUserDetails(user))
+                  if(user.userValues.isAdmin === true){
+                    dispatch(authActions.setIsUserAdmin());
+                  }
+                }
+              }
+            })
+            .catch(err =>{
+              console.error(err);
+            })
+        })
+        .catch(err => {
+          console.error(err);
         })
     }
     setIsLoading(false);

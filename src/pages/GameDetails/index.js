@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { cartActions } from '../../store/cart';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import { Col, Row } from "antd";
 
 function GameDetails() {
     const { gameId } = useParams();
@@ -34,7 +35,8 @@ function GameDetails() {
         setIsLoading(true);
         axios.get(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games.json`)
             .then(res => {
-                for (let gm of res.data) {
+                for (let key in res.data) {
+                    const gm = res.data[key];
                     if (gm.id === gameId) {
                         setGame(gm);
                         setWinMinimum(gm.systemReqs.windows.minimum);
@@ -54,11 +56,11 @@ function GameDetails() {
             .catch(err => {
                 console.error(err);
             })
-        
+
     }, [gameId]);
 
     const addGameToCartHandler = ({ game, gameQuantity }) => {
-        dispatch(cartActions.addToCart({game, gameQuantity}));
+        dispatch(cartActions.addToCart({ game, gameQuantity }));
     }
     return (
         <div style={{ display: 'flex' }}>
@@ -71,7 +73,7 @@ function GameDetails() {
                         <Grid.Column mobile={12} tablet={8} computer={4}>
                             <Grid.Row columns={2} style={{ marginTop: 20, marginLeft: 0 }}>
                                 <Grid.Column>
-                                    <Button as='div' labelPosition='right' onClick={() => addGameToCartHandler({game: game, gameQuantity})} >
+                                    <Button as='div' labelPosition='right' onClick={() => addGameToCartHandler({ game: game, gameQuantity })} >
                                         <Button color='black'>
                                             <Icon name='shop' />
                                         </Button>

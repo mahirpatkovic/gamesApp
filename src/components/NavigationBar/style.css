@@ -62,6 +62,11 @@
     margin-left: -4rem;
   }
 }
+@media  (min-width: 1024px) and (max-width: 1100px){
+  .nav-logo2{
+    margin-left: -5rem;
+  }
+}
 
 @media (min-width: 760px) and (max-width: 1024px) {
   .nav-logo {
