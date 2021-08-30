@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Comment, Form, Header } from 'semantic-ui-react';
+import { Button, Comment, Form, Header, Icon } from 'semantic-ui-react';
 import { useSelector } from "react-redux";
 import axios from 'axios';
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
-import {List} from 'antd';
+import { List, notification } from 'antd';
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -17,10 +17,9 @@ let min = today.getMinutes();
 
 today = day + '.' + month + '.' + year + ' - ' + hour + ':' + min;
 function CommentSection(props) {
-    const user = useSelector(state => state.auth.currentUser);
+    const currentUser = useSelector(state => state.auth.currentUser);
     const [newComment, setNewComment] = useState({
         gameId: props.gameId,
-        user: (user ? user.displayName : null),
         comment: "",
         date: today,
     });
@@ -54,18 +53,18 @@ function CommentSection(props) {
         } else {
             axios.get(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games.json`)
                 .then(res => {
-                    for (let game of res.data) {
+                    for (let key in res.data) {
+                        const game = res.data[key];
                         if (game.id === props.gameId) {
-                            let string = game.id;
-                            // string.slice(1);
-                            // console.log(string)
-                            axios.post(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games/${string.slice(1)}/comments.json`, (newComment))
-                                .then(res => {
-                                    setNewComment(res.data.name);
+                            axios.post(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games/${key}/comments.json`, ({ ...newComment, user: currentUser.displayName }))
+                                .then(() => {
                                     setComments((prevState) => {
-                                        return [...prevState, newComment];
+                                        return [{...newComment, user: currentUser.displayName}, ...prevState];
                                     })
-                                    console.log("Comment created");
+                                    notification.open({
+                                        message: `Game Commented`,
+                                        icon: <Icon name='check circle outline' />,
+                                    });
                                     setEnteredText("");
                                     setIsButtonDisabled(true);
                                 })
@@ -91,25 +90,25 @@ function CommentSection(props) {
                 <Header as='h3' dividing>
                     Comments
                 </Header>
-                {(comments.length > 0) ? 
+                {(comments.length > 0) ?
                     <List
-                    pagination={{
-                        pageSize: 3,
-                        responsive: true,
-                    }}
-                    dataSource={comments}
-                    renderItem={comment => (
-                        <List.Item>
-                          <List.Item.Meta
-                            title={comment.user}
-                            description={comment.date}
-                          />
-                          {comment.comment}
-                        </List.Item>
-                      )}
-                  >
-                  </List>
-                
+                        pagination={{
+                            pageSize: 3,
+                            responsive: true,
+                        }}
+                        dataSource={comments}
+                        renderItem={comment => (
+                            <List.Item>
+                                <List.Item.Meta
+                                    title={comment.user}
+                                    description={comment.date}
+                                />
+                                {comment.comment}
+                            </List.Item>
+                        )}
+                    >
+                    </List>
+
                     : <p>No comments for this game.</p>}
                 <Form reply>
                     <Form.TextArea onChange={handleInputChange} value={enteredText} />

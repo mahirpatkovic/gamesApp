@@ -8,7 +8,7 @@ import NavigationBar from "../components/NavigationBar";
 
 import Home from '../pages/Home/index';
 import About from '../pages/About';
-import UserProfile from '../pages/UserProfile';
+import UserProfile from '../pages/UserProfile/index';
 import Games from "../pages/Games";
 import { useDispatch, useSelector } from "react-redux";
 import GameDetails from '../pages/GameDetails/index';
@@ -18,9 +18,9 @@ import { useEffect, useState } from "react";
 import Loader from "../components/Loader";
 import axios from 'axios';
 import { gamesActions } from "../store/games";
+import AdminPage from "../pages/AdminPage/index";
 
 function Dashboard() {
-    const [games, setGames] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const isUserLoggedIn = useSelector(state => state.auth.isAuthenticated);
     const cartGames = useSelector(state => state.cart.addedGamesToCart);
@@ -29,14 +29,18 @@ function Dashboard() {
         setIsLoading(true);
         axios.get(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games.json`)
             .then(res => {
-                setGames(res.data);
-                dispatch(gamesActions.fetchGames(res.data));
+                let transformedData = [];
+                for(let key in res.data){
+                    transformedData.push(res.data[key])
+                }
+                dispatch(gamesActions.fetchGames(transformedData));
                 setIsLoading(false);
             })
             .catch(err => {
                 console.error(err);
             })
     }, []);
+    
     useEffect(() => {
         setIsLoading(false);
     }, []);
@@ -67,13 +71,16 @@ function Dashboard() {
                         {cartGames.length > 0 ? <Checkout /> : <Home />}
                     </Route>
                     <Route path="/games" exact>
-                        {!isUserLoggedIn ? <Redirect to="/" /> : <Games />}
+                        {!isUserLoggedIn ? <Home /> : <Games />}
+                    </Route>
+                    <Route path="/admin" exact>
+                        {!isUserLoggedIn ? <Home /> : <AdminPage />}
                     </Route>
                     <Route path="/:gameId" exact>
                         <GameDetails />
                     </Route>
                     <Route path="*" exact>
-                        <Redirect to="/" />
+                        <Redirect from='*' to='/' />
                     </Route>
                 </Switch>}
             </Router>

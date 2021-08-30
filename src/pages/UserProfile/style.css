@@ -1,0 +1,23 @@
+.userProfile{
+    margin-top: 150px;
+    margin-left: auto;
+    margin-right: auto;
+
+    /* display: grid;
+    place-items: center; */
+    /* align-items: center;
+    justify-content: center; */
+}
+.accordionUserProfile{
+    margin-top: 20px;
+}
+
+@media (max-width: 1024px){
+    .userProfile{
+        margin-top: 100px;
+        width: 90%;
+    }
+    .accordionUserProfile{
+        width: auto;
+    }
+}

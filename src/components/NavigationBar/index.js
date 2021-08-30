@@ -22,7 +22,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { useMediaQuery } from 'react-responsive';
 import ShoppingCartHoverModal from '../ShoppingCartHoverModal';
 import { cartActions } from '../../store/cart';
-import { Icon, Search,  Header, Segment } from 'semantic-ui-react';
+import { Icon, Search } from 'semantic-ui-react';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: 'black',
             color: 'white'
         },
-        
+
     },
     userButton: {
         backgroundColor: 'white',
@@ -117,6 +117,7 @@ function NavigationBar(props) {
     const currentUser = useSelector(state => state.auth.currentUser);
     const cartGames = useSelector(state => state.cart.addedGamesToCart);
     const isGameAlreadyInCart = useSelector(state => state.cart.gameAlreadyInCart);
+    const isUserAdmin = useSelector(state => state.auth.isUserAdmin);
     const history = useHistory();
     const dispatch = useDispatch();
     const isDesktopOrLaptop = useMediaQuery({
@@ -252,7 +253,6 @@ function NavigationBar(props) {
                 }
             }
         }
-
         // console.log("result", result)
         setFilteredGames(result);
         setIsIconLoading(false);
@@ -346,6 +346,17 @@ function NavigationBar(props) {
                                 Contact
                             </NavLink>
                         </li>
+                        {(isUserLoggedIn && isUserAdmin) && <li className="nav-item">
+                            <NavLink
+                                exact
+                                to="/admin"
+                                activeClassName="active"
+                                className="nav-links"
+                                onClick={handleClick}
+                            >
+                                Admin
+                            </NavLink>
+                        </li>}
                     </ul>
                     {!isSearcBarVisible && <Icon name='search' color='black' className="searchIcon" onClick={() => setIsSearchBarVisible(true)} />}
                     <div ref={ref}>
@@ -355,7 +366,7 @@ function NavigationBar(props) {
                                 size='small'
                                 onSearchChange={handleInputSearchChange}
                                 results={filteredGames}
-                                onResultSelect={(e, data) => handleGameSelect(e,data)}
+                                onResultSelect={(e, data) => handleGameSelect(e, data)}
                                 className="searchBar"
                             />}
                         </Grid>
@@ -429,7 +440,7 @@ function NavigationBar(props) {
                                     size='mini'
                                     onSearchChange={handleInputSearchChange}
                                     results={filteredGames}
-                                    onResultSelect={(e, data) => handleGameSelect(e,data)}
+                                    onResultSelect={(e, data) => handleGameSelect(e, data)}
                                     className="searchBar"
                                 />}
                             </Grid>
@@ -483,6 +494,7 @@ function NavigationBar(props) {
                 isSignupModalVisible && <SignupModal
                     visible={isSignupModalVisible}
                     onClose={closeSignupModalHandler}
+                    onLoad={handleLoaderShow}
                 />
             }
             {

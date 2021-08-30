@@ -3,7 +3,6 @@ import { Grid, Avatar, TextField, Button, Dialog, DialogContent, DialogActions }
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../../store/auth';
 import { Alert, AlertTitle } from '@material-ui/lab';
@@ -34,10 +33,15 @@ function SignupModal(props) {
         email: '',
         password: '',
     });
+    const userValues = {
+        isAdmin: false,
+        address: '',
+        phone: '',
+    };
+    
     const [isAlertVisible, setIsAlertVisible] = useState(false);
 
     const classes = useStyles();
-    const history = useHistory();
     const dispatch = useDispatch();
     const formRef = useRef();
 
@@ -67,6 +71,16 @@ function SignupModal(props) {
                             return;
                         }
                     }, 0);
+                    axios.post(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/userDetails.json`, {
+                        authDetails: { username: res.data.displayName, email: res.data.email },
+                        userValues: userValues
+                    })
+                        .then(() => {
+                            dispatch(authActions.setUserDetails({authDetails: {username: res.data.displayName, email: res.data.email}, userValues: userValues}))
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
                 }
             })
             .catch(() => {

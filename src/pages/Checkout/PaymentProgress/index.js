@@ -88,10 +88,6 @@ function PaymentProgress() {
     }
 
     const applyDiscountCodeChangeHandler = () => {
-        // axios.post(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/discountCodes.json`, {codeId: enteredCode})
-        //     .then(res =>{
-        //         console.log(res.data)
-        //     })
         const newCodeIndex = discountCodes.findIndex(code => code.codeId === enteredCode);
         if (newCodeIndex === -1) {
             setEneteredCode('');

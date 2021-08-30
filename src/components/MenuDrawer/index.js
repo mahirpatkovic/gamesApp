@@ -1,16 +1,20 @@
 import React from 'react';
 import { Drawer, List, Divider, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 import StarIcon from '@material-ui/icons/Star';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import logo from './logo.png';
 import logo2 from './logo2.png';
 import { NavLink } from 'react-router-dom';
 import './style.css'
 
 function MenuDrawer(props) {
+  const isUserLoggedIn = useSelector(state => state.auth.isAuthenticated);
+  const isUserAdmin = useSelector(state => state.auth.isUserAdmin);
 
   const list = () => (
     <div
@@ -52,6 +56,14 @@ function MenuDrawer(props) {
             <ListItemText primary="Contact Us" />
           </NavLink>
         </ListItem>
+        {(isUserLoggedIn && isUserAdmin) && <ListItem button key="5">
+          <ListItemIcon>
+            <SupervisorAccountIcon className="icon" />
+          </ListItemIcon>
+          <NavLink to='/admin' style={{ textDecoration: "none", color: "black" }}>
+            <ListItemText primary="Admin" />
+          </NavLink>
+        </ListItem>}
 
       </List>
       <Divider style={{ height: 2, backgroundColor: 'black' }} />

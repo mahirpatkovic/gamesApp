@@ -12,7 +12,7 @@ function Home() {
         let startTime = new Date().getTime();
         let interval = setInterval(() => {
             setIsLoading(true);
-            if (new Date().getTime() - startTime > 1000) {
+            if (new Date().getTime() - startTime > 500) {
                 setIsLoading(false);
                 clearInterval(interval);
                 return;
