@@ -72,11 +72,14 @@ const useStyles = makeStyles((theme) => ({
         zIndex: 3,
         marginTop: '2rem',
         marginRight: '13rem',
-        '@media (min-width: 1024px) and (max-width: 1300px)': {
-            marginRight: '1rem'
+        '@media (min-width: 1024px) and (max-width: 1350px)': {
+            marginRight: '2rem'
         },
-        '@media (min-width: 1300px) and (max-width: 1500px)': {
+        '@media (min-width: 1430px) and (max-width: 1600px)': {
             marginRight: '5rem'
+        },
+        '@media (min-width: 1350px) and (max-width: 1430px)': {
+            marginRight: '2rem'
         },
 
     },

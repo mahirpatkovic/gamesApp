@@ -1,5 +1,6 @@
 import React from 'react'
 import { Icon, Table } from 'semantic-ui-react'
+import { Card, Col, Row } from 'antd';
 
 function TableLanguageInfo(props) {
     const english = props.english;
@@ -7,50 +8,99 @@ function TableLanguageInfo(props) {
     const portugese = props.portugese;
     const spanish = props.spanish;
     const turkish = props.turkish;
-    
+
     return (
-        <Table celled structured>
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell rowSpan='2'>Languages</Table.HeaderCell>
-                    <Table.HeaderCell rowSpan='2'>Interface</Table.HeaderCell>
-                    <Table.HeaderCell rowSpan='2'>Audio</Table.HeaderCell>
-                    <Table.HeaderCell colSpan='3'>Subtitles</Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
-            <Table.Body>
-                <Table.Row>
-                    <Table.Cell>English</Table.Cell>
-                    <Table.Cell textAlign="center">{english.interface === 'yes' ? <Icon name='checkmark' /> : ''}</Table.Cell>
-                    <Table.Cell textAlign="center">{english.audio === 'yes' ? <Icon name='checkmark' /> : ''}</Table.Cell>
-                    <Table.Cell textAlign="center">{english.subtitles === 'yes' ? <Icon name='checkmark' /> : ''}</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>German</Table.Cell>
-                    <Table.Cell textAlign="center">{german.interface === 'yes' ? <Icon name='checkmark' /> : ''}</Table.Cell>
-                    <Table.Cell textAlign="center">{german.audio === 'yes' ? <Icon name='checkmark' /> : ''}</Table.Cell>
-                    <Table.Cell textAlign="center">{german.subtitles === 'yes' ? <Icon name='checkmark' /> : ''}</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>Portugese</Table.Cell>
-                    <Table.Cell textAlign="center">{portugese.interface === 'yes' ? <Icon name='checkmark' /> : ''}</Table.Cell>
-                    <Table.Cell textAlign="center">{portugese.audio === 'yes' ? <Icon name='checkmark' /> : ''}</Table.Cell>
-                    <Table.Cell textAlign="center">{portugese.subtitles === 'yes' ? <Icon name='checkmark' /> : ''}</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>Spanish</Table.Cell>
-                    <Table.Cell textAlign="center">{spanish.interface === 'yes' ? <Icon name='checkmark' /> : ''}</Table.Cell>
-                    <Table.Cell textAlign="center">{spanish.audio === 'yes' ? <Icon name='checkmark' /> : ''}</Table.Cell>
-                    <Table.Cell textAlign="center">{spanish.subtitles === 'yes' ? <Icon name='checkmark' /> : ''}</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>Turkish</Table.Cell>
-                    <Table.Cell textAlign="center">{turkish.interface === 'yes' ? <Icon name='checkmark' /> : ''}</Table.Cell>
-                    <Table.Cell textAlign="center">{turkish.audio === 'yes' ? <Icon name='checkmark' /> : ''}</Table.Cell>
-                    <Table.Cell textAlign="center">{turkish.subtitles === 'yes' ? <Icon name='checkmark' /> : ''}</Table.Cell>
-                </Table.Row>
-            </Table.Body>
-        </Table>
+        <Card>
+            <Row>
+                <Col span={6}>
+                    <strong>Languages</strong>
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    <strong>Interface</strong>
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    <strong>Audio</strong>
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    <strong>Subtitles</strong>
+                </Col>
+            </Row>
+            <hr />
+            <Row>
+                <Col span={6}>
+                    <strong>English</strong>
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    {english.interface === 'yes' ? <Icon name='checkmark' /> : ''}
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    {english.audio === 'yes' ? <Icon name='checkmark' /> : ''}
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    {english.subtitles === 'yes' ? <Icon name='checkmark' /> : ''}
+                </Col>
+            </Row>
+            <hr />
+            <Row>
+                <Col span={6}>
+                    <strong>German</strong>
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    {german.interface === 'yes' ? <Icon name='checkmark' /> : ''}
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    {german.audio === 'yes' ? <Icon name='checkmark' /> : ''}
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    {german.subtitles === 'yes' ? <Icon name='checkmark' /> : ''}
+                </Col>
+            </Row>
+            <hr />
+            <Row>
+                <Col span={6}>
+                    <strong>Portugese</strong>
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    {portugese.interface === 'yes' ? <Icon name='checkmark' /> : ''}
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    {portugese.audio === 'yes' ? <Icon name='checkmark' /> : ''}
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    {portugese.subtitles === 'yes' ? <Icon name='checkmark' /> : ''}
+                </Col>
+            </Row>
+            <hr />
+            <Row>
+                <Col span={6}>
+                    <strong>Spanish</strong>
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    {spanish.interface === 'yes' ? <Icon name='checkmark' /> : ''}
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    {spanish.audio === 'yes' ? <Icon name='checkmark' /> : ''}
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    {spanish.subtitles === 'yes' ? <Icon name='checkmark' /> : ''}
+                </Col>
+            </Row>
+            <hr />
+            <Row>
+                <Col span={6}>
+                    <strong>Turkish</strong>
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    {turkish.interface === 'yes' ? <Icon name='checkmark' /> : ''}
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    {turkish.audio === 'yes' ? <Icon name='checkmark' /> : ''}
+                </Col>
+                <Col span={6} style={{textAlign: 'center'}}>
+                    {turkish.subtitles === 'yes' ? <Icon name='checkmark' /> : ''}
+                </Col>
+            </Row>
+        </Card>
     )
 }
 export default TableLanguageInfo;

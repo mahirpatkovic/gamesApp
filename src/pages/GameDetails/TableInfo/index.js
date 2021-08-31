@@ -1,79 +1,82 @@
-import React from 'react'
+import React from 'react';
+import { Card, Col, Row } from 'antd';
 import { Header, Table, Icon } from 'semantic-ui-react'
 
 function TableInfo(props) {
     return (
-
-        <Table basic='very' celled collapsing>
-            <Table.Body>
-                <Table.Row>
-                    <Table.Cell>
-                        <Header as='h4'>
-                            <Icon name='tags'/>
-                            <Header.Content>
-                                Genre
-                            </Header.Content>
-                        </Header>
-                    </Table.Cell>
-                    <Table.Cell>{props.game.genre}</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>
-                        <Header as='h4'>
-                            <Icon name='clock outline'/>
-                            <Header.Content>
-                                Release Date
-                            </Header.Content>
-                        </Header>
-                    </Table.Cell>
-                    <Table.Cell>{props.game.releaseDate}</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>
-                        <Header as='h4'>
-                            <Icon name='settings'/>
-                            <Header.Content>
-                                Developer
-                            </Header.Content>
-                        </Header>
-                    </Table.Cell>
-                    <Table.Cell>{props.game.developer}</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>
-                        <Header as='h4'>
-                            <Icon name='globe'/>
-                            <Header.Content>
-                                Publisher
-                            </Header.Content>
-                        </Header>
-                    </Table.Cell>
-                    <Table.Cell>{props.game.publisher}</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>
-                        <Header as='h4'>
-                            <Icon name='tv'/>
-                            <Header.Content>
-                                Platforms
-                            </Header.Content>
-                        </Header>
-                    </Table.Cell>
-                    <Table.Cell>{props.game.platform}</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>
-                        <Header as='h4'>
-                            <Icon name='users'/>
-                            <Header.Content>
-                                Modes
-                            </Header.Content>
-                        </Header>
-                    </Table.Cell>
-                    <Table.Cell>{props.game.modes}</Table.Cell>
-                </Table.Row>
-            </Table.Body>
-        </Table>
+        <Card>
+            <Row>
+                <Col span={2}>
+                    <Icon name='tags' />
+                </Col>
+                <Col span={8}>
+                    <strong>Genre</strong>
+                </Col>
+                <Col>
+                    {props.game.genre}
+                </Col>
+            </Row>
+            <hr />
+            <Row>
+                <Col span={2}>
+                    <Icon name='clock outline' />
+                </Col>
+                <Col span={8}>
+                    <strong>Release Date</strong>
+                </Col>
+                <Col>
+                    {props.game.releaseDate}
+                </Col>
+            </Row>
+            <hr />
+            <Row>
+                <Col span={2}>
+                    <Icon name='settings' />
+                </Col>
+                <Col span={8}>
+                    <strong>Developer</strong>
+                </Col>
+                <Col>
+                    {props.game.developer}
+                </Col>
+            </Row>
+            <hr />
+            <Row>
+                <Col span={2}>
+                    <Icon name='globe' />
+                </Col>
+                <Col span={8}>
+                    <strong>Publisher</strong>
+                </Col>
+                <Col>
+                    {props.game.publisher}
+                </Col>
+            </Row>
+            <hr />
+            <Row>
+                <Col span={2}>
+                    <Icon name='tv' />
+                </Col>
+                <Col span={8}>
+                    <strong>Platforms</strong>
+                </Col>
+                <Col>
+                    {props.game.platform}
+                </Col>
+            </Row>
+            <hr />
+            <Row>
+                <Col span={2}>
+                    <Icon name='users' />
+                </Col>
+                <Col span={8}>
+                    <strong>Modes</strong>
+                </Col>
+                <Col>
+                    {props.game.modes}
+                </Col>
+            </Row>
+        </Card>
     )
 }
 

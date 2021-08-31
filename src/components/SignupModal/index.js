@@ -114,6 +114,9 @@ function SignupModal(props) {
                             required
                             style={{ marginTop: 10 }}
                             onChange={handleInputChange('displayName')}
+                            inputProps={{
+                                maxLength: 8,
+                              }}
                         />
                         <TextField
                             id='email'
