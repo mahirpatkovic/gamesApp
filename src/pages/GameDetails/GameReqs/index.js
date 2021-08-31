@@ -155,7 +155,7 @@ function GameReqs(props) {
     
     return (
         <div>
-            <Accordion styled >
+            <Accordion styled style={{width: '100%'}}>
                 <Accordion.Title
                     active={activeIndex === 0}
                     index={0}
@@ -164,7 +164,7 @@ function GameReqs(props) {
                     <Icon name='dropdown' />
                    Windows Requirements
                 </Accordion.Title>
-                <Accordion.Content active={activeIndex === 0}>
+                <Accordion.Content active={activeIndex === 0} >
                     {windowsRequirements}
                 </Accordion.Content>
                 <Accordion.Title

@@ -21,3 +21,8 @@
         width: auto;
     }
 }
+@media (max-width: 540px){
+    .userProfile{
+        margin-top: 70px;
+    }
+}

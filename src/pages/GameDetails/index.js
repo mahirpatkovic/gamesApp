@@ -14,6 +14,7 @@ import { cartActions } from '../../store/cart';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import { Col, Row } from "antd";
+import { useMediaQuery } from 'react-responsive';
 
 function GameDetails() {
     const { gameId } = useParams();
@@ -31,6 +32,15 @@ function GameDetails() {
     const [gameQuantity, setGameQuantity] = useState(1);
     const dispatch = useDispatch();
 
+    const isSmallDesktopSize = useMediaQuery({
+        query: '(max-device-width: 1200px)'
+    });
+    const isTabletBiggerSize = useMediaQuery({
+        query: '(max-device-width: 1024px)'
+    });
+    const isTabletSize = useMediaQuery({
+        query: '(max-device-width: 992px)'
+    });
     useEffect(() => {
         setIsLoading(true);
         axios.get(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games.json`)
@@ -65,91 +75,134 @@ function GameDetails() {
     return (
         <div style={{ display: 'flex' }}>
             {isLoading ? <Loader /> : <div className="gameSinglePage">
-                <Grid columns={2} >
-                    <Grid.Row columns={2} centered>
-                        <Grid.Column mobile={16} tablet={12} computer={6}>
-                            <ImageSlider images={game.images} />
-                        </Grid.Column>
-                        <Grid.Column mobile={12} tablet={8} computer={4}>
-                            <Grid.Row columns={2} style={{ marginTop: 20, marginLeft: 0 }}>
-                                <Grid.Column>
-                                    <Button as='div' labelPosition='right' onClick={() => addGameToCartHandler({ game: game, gameQuantity })} >
-                                        <Button color='black'>
-                                            <Icon name='shop' />
-                                        </Button>
-                                        <Label as='a' basic color='black' pointing='left'>
-                                            Add to cart
-                                        </Label>
+                <Row justify='center'>
+                    <Col
+                        md={{ span: 22 }}
+                        lg={{ span: 22 }}
+                        xl={{ span: 15 }}
+                        xxl={{ span: 12 }}
+                    >
+                        <ImageSlider images={game.images} />
+                    </Col>
+                    <Col
+                        md={{ span: 22 }}
+                        lg={{ span: 22 }}
+                        xl={{ span: 7, offset: 1 }}
+                        xxl={{ span: 6, offset: 1 }}
+                        style={{ marginTop: isSmallDesktopSize ? 30 : 0 }}
+                        sm={{ span: 22 }}
+                        xs={{ span: 22 }}
+                    >
+                        <Row>
+                            <Col>
+                                <Button as='div' labelPosition='right' onClick={() => addGameToCartHandler({ game: game, gameQuantity })} >
+                                    <Button color='black'>
+                                        <Icon name='shop' />
                                     </Button>
-                                </Grid.Column>
-                                <Grid.Column style={{ marginLeft: 10 }}>
-                                    <Label as='a' tag size="big">${Number(game.price).toFixed(2)}</Label>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row columns={2} style={{ marginTop: 5, marginLeft: 0 }}>
-                                <ButtonGroup size="small">
-                                    <Button
-                                        aria-label="reduce"
-                                        onClick={() => gameQuantity > 1 && setGameQuantity(gameQuantity - 1)}
-                                    >
-                                        <RemoveIcon fontSize="small" />
-                                    </Button>
-                                    <Button color="vk">
-                                        {gameQuantity}
-                                    </Button>
-                                    <Button
-                                        aria-label="increase"
-                                        onClick={() => setGameQuantity(gameQuantity + 1)}
-                                    >
-                                        <AddIcon fontSize="small" />
-                                    </Button>
-                                </ButtonGroup>
-                            </Grid.Row>
-                            <Segment>
-                                <TableInfo game={game} />
-                            </Segment>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row centered style={{ marginLeft: 0 }}>
-                        <Grid.Column mobile={16} tablet={12} computer={6}>
-                            <Embed
-                                autoplay={true}
-                                id={game.trailer}
-                                source='youtube'
-                                iframe={{
-                                    allowFullScreen: true,
-                                    autoplay: true,
-                                }}
-                                className="gameTrailer"
+                                    <Label as='a' basic color='black' pointing='left'>
+                                        Add to cart
+                                    </Label>
+                                </Button>
+                            </Col>
+                            <Col>
+                                <Label as='a' tag size="big">${Number(game.price).toFixed(2)}</Label>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <ButtonGroup size="small">
+                                <Button
+                                    aria-label="reduce"
+                                    onClick={() => gameQuantity > 1 && setGameQuantity(gameQuantity - 1)}
+                                >
+                                    <RemoveIcon fontSize="small" />
+                                </Button>
+                                <Button color="vk">
+                                    {gameQuantity}
+                                </Button>
+                                <Button
+                                    aria-label="increase"
+                                    onClick={() => setGameQuantity(gameQuantity + 1)}
+                                >
+                                    <AddIcon fontSize="small" />
+                                </Button>
+                            </ButtonGroup>
+                        </Row>
+                        <Segment>
+                            <TableInfo game={game} />
+                        </Segment>
+                    </Col>
+                </Row><br />
+
+                <Row style={{ marginTop: isTabletBiggerSize ? 30 : 0 }} justify='center'>
+                    <Col
+                        md={{ span: 22 }}
+                        xl={{ span: 15 }}
+                        xxl={{ span: 12 }}
+                        lg={{ span: 22 }}
+                        sm={{ span: 23 }}
+                        xs={{ span: 23 }}
+                    >
+                        <Embed
+                            autoplay={true}
+                            id={game.trailer}
+                            source='youtube'
+                            iframe={{
+                                allowFullScreen: true,
+                                autoplay: true,
+                            }}
+                            className="gameTrailer"
+                        />
+                    </Col>
+                    <Col
+                        md={{ span: 22 }}
+                        lg={{ span: 22 }}
+                        xl={{ span: 7, offset: 1 }}
+                        xxl={{ span: 6, offset: 1 }}
+                        sm={{ span: 22 }}
+                        xs={{ span: 23 }}
+                        style={{ marginTop: isSmallDesktopSize ? 30 : 0 }}
+                    >
+                        <TableLanguageInfo
+                            english={english}
+                            german={german}
+                            portugese={portugese}
+                            spanish={spanish}
+                            turkish={turkish}
+                        />
+                    </Col>
+                </Row>
+                
+                <Row style={{ marginTop: 30 }} justify='center'>
+                    <Col
+                        xxl={{ span: 8, offset: 2 }}
+                        xl={{ span: 11 }}
+                        lg={{ span: 22 }}
+                        md={{ span: 22 }}
+                        sm={{ span: 23 }}
+                        xs={{ span: 23 }}
+                    >
+                        <Segment>
+                            <h4>System Requirements</h4>
+                            <GameReqs
+                                winMinimum={winMinimum}
+                                winRecommended={winRecommended}
+                                macMinimum={macMinimum}
+                                macRecommended={macRecommended}
                             />
-                        </Grid.Column>
-                        <Grid.Column only={'computer'} computer={4} >
-                            <TableLanguageInfo
-                                english={english}
-                                german={german}
-                                portugese={portugese}
-                                spanish={spanish}
-                                turkish={turkish}
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row centered style={{ marginLeft: 0 }}>
-                        <Grid.Column only={'computer'} computer={6}>
-                            <Segment>
-                                <h4>System Requirements</h4>
-                                <GameReqs
-                                    winMinimum={winMinimum}
-                                    winRecommended={winRecommended}
-                                    macMinimum={macMinimum}
-                                    macRecommended={macRecommended}
-                                />
-                            </Segment>
-                        </Grid.Column>
-                        <Grid.Column mobile={14} tablet={12} computer={4}>
-                            <CommentSection gameId={game.id} comments={game.comments} />
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                        </Segment>
+                    </Col>
+                    <Col
+                        xxl={{ span: 11, offset: 1 }}
+                        xl={{ span: 11, offset: 1 }}
+                        lg={{ span: 22 }}
+                        md={{ span: 22 }}
+                        sm={{ span: 23 }}
+                        xs={{ span: 23 }}
+                        style={{ marginTop: isSmallDesktopSize ? 30 : 0 }}
+                    >
+                        <CommentSection gameId={game.id} comments={game.comments} />
+                    </Col>
+                </Row>
 
                 <p>GameDetails Page</p>
                 <h3>{game.name}</h3>

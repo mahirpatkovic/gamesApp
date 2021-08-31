@@ -3,7 +3,12 @@
 }
 @media (max-width: 1024px){
     .gameSinglePage{
-        margin: 0 auto;
+        margin: 50px auto;
+    }
+}
+@media (min-width: 540px) and (max-width: 768px){
+    .gameSinglePage{
+        margin: 0px auto;
     }
 }
 

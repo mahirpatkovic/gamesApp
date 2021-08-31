@@ -46,7 +46,7 @@
   width: 60px;
   margin-left: -4rem;
 }
-@media  (min-width: 1024px) and (max-width: 1300px){
+@media  (min-width: 1024px) and (max-width: 1350px){
   .nav-logo {
     width: 130px;
     height: 50px;
@@ -54,17 +54,17 @@
   }
   .nav-logo2{
     width: 50px;
-    margin-left: -4rem;
+    margin-left: -5rem;
   }
 }
-@media  (min-width: 1300px) and (max-width: 1500px){
+@media  (min-width: 1350px) and (max-width: 1500px){
   .nav-logo2{
-    margin-left: -4rem;
+    margin-left: -6rem;
   }
 }
 @media  (min-width: 1024px) and (max-width: 1100px){
   .nav-logo2{
-    margin-left: -5rem;
+    margin-left: -6rem;
   }
 }
 
@@ -133,13 +133,14 @@
   text-decoration: none;
     color: white;
 }
-@media  (min-width: 1024px) and (max-width: 1300px){
+@media  (min-width: 1024px) and (max-width: 1350px){
   .nav-menu{
     display: flex;
     list-style: none;
     text-align: center;
     margin-top: 3rem;
     z-index: 2;
+    margin-left: 1rem;
   }
 }
 /* @media  (min-width: 1430px) and (max-width: 1500px){
@@ -202,6 +203,18 @@
   right: 1rem;
   cursor: pointer;
 }
+@media  (min-width: 1024px) and (max-width: 1350px){
+  .searchBar{
+    margin-right: -6rem;
+    width: 105px;
+  }
+  .navBox img{
+    width: 80%;
+    left: 25%;
+  }
+}
+
+
 @media  (min-width: 541px) and (max-width: 1024px){
   .searchIcon{
        top: -1rem;
