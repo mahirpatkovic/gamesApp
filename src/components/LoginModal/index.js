@@ -47,7 +47,6 @@ function LoginModal(props) {
     const handleLogin = () => {
         axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCrEB1r3iKHWXKZ53Cz-7G7uUpwOjoF2yM`, values)
             .then(res => {
-                console.log(res)
                 if (res.status === 200) {
                     dispatch(authActions.login());
                     dispatch(authActions.setUser(res.data));

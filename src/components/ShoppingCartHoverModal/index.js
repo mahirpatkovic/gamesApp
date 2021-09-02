@@ -53,9 +53,9 @@ function ShoppingCartHoverModal(props) {
 
     const dispatch = useDispatch();
     const history = useHistory();
-    useEffect(() => {
-        console.log(cartGames);
-    }, [cartGames]);
+    // useEffect(() => {
+    //     console.log(cartGames);
+    // }, [cartGames]);
 
     const classes = useStyles();
 

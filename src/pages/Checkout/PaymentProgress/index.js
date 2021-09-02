@@ -27,13 +27,14 @@ function PaymentProgress() {
     const [enteredCode, setEneteredCode] = useState('');
     const [isDiscountAppliedAlertVisible, setIsDiscountAppliedAlertVisible] = useState(false);
     const [isDiscountDeniedAlertVisible, setIsDicountDeniedAlertVisible] = useState(false);
-    const [isDiscountApplied, setIsDiscountApplied] = useState(false);
     const [discountCodeDbIds, setDiscountCodeDbIds] = useState([]);
 
     const cartGames = useSelector(state => state.cart.addedGamesToCart);
     const totalPrice = useSelector(state => state.cart.totalPrice);
     const totalDiscountPrice = useSelector(state => state.cart.totalDiscountPrice);
     const activeStep = useSelector(state => state.cart.activePaymentStep);
+    const isDiscountApplied = useSelector(state => state.cart.isDiscountApplied);
+
     const isTabletOrMobile = useMediaQuery({
         query: '(max-device-width: 991px)'
     });
@@ -56,6 +57,9 @@ function PaymentProgress() {
                 .catch(err => {
                     console.error(err);
                 })
+        }
+        if(isDiscountApplied){
+            dispatch(cartActions.discountHandler());
         }
 
         fetchDiscountCodesOptions();
@@ -93,7 +97,7 @@ function PaymentProgress() {
             setEneteredCode('');
             setIsDicountDeniedAlertVisible(true);
         } else {
-            setIsDiscountApplied(true);
+            dispatch(cartActions.setAppliedDiscount());
             dispatch(cartActions.discountHandler());
             setIsDiscountAppliedAlertVisible(true);
             setEneteredCode('');
@@ -212,7 +216,7 @@ function PaymentProgress() {
                                         {isDiscountApplied ? <del>{totalPrice.toFixed(2)} $</del> : `${totalPrice.toFixed(2)} $`}
                                     </Typography>
                                     {isDiscountApplied && <Typography variant="subtitle1" color="textPrimary" style={{ textAlign: 'right' }}>
-                                        {totalDiscountPrice.toFixed(2)} $
+                                        {(totalDiscountPrice).toFixed(2)} $
                                     </Typography>}
                                 </Grid.Column>
                             </Grid.Row>

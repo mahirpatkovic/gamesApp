@@ -24,6 +24,7 @@ function Dashboard() {
     const [isLoading, setIsLoading] = useState(false);
     const isUserLoggedIn = useSelector(state => state.auth.isAuthenticated);
     const cartGames = useSelector(state => state.cart.addedGamesToCart);
+    const isUserAdmin = useSelector(state => state.auth.isUserAdmin)
     const dispatch = useDispatch();
     useEffect(() => {
         setIsLoading(true);
@@ -74,7 +75,7 @@ function Dashboard() {
                         {!isUserLoggedIn ? <Home /> : <Games />}
                     </Route>
                     <Route path="/admin" exact>
-                        {!isUserLoggedIn ? <Home /> : <AdminPage />}
+                        {(isUserLoggedIn && isUserAdmin) ?  <AdminPage /> : <Home />}
                     </Route>
                     <Route path="/:gameId" exact>
                         <GameDetails />
@@ -83,6 +84,7 @@ function Dashboard() {
                         <Redirect from='*' to='/' />
                     </Route>
                 </Switch>}
+
             </Router>
         </div>
     );
