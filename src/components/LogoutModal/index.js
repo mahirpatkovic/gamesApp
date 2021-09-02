@@ -41,7 +41,7 @@ function LogoutModal(props) {
                 return;
             }
         }, 0);
-        localStorage.removeItem('userToken');
+        localStorage.clear();
         dispatch(authActions.logout());
         history.push('/');
         props.onClose();

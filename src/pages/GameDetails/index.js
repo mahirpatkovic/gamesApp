@@ -203,9 +203,6 @@ function GameDetails() {
                         <CommentSection gameId={game.id} comments={game.comments} />
                     </Col>
                 </Row>
-
-                <p>GameDetails Page</p>
-                <h3>{game.name}</h3>
             </div>}
         </div>
     )

@@ -8,6 +8,7 @@ const initialCartState = {
     activePaymentStep: 0,
     userInfoPaymentDetails: [],
     cartPaymentDetails: [],
+    isDiscountApplied: false,
 };
 const cartSlice = createSlice({
     name: 'addToCartGames',
@@ -36,6 +37,8 @@ const cartSlice = createSlice({
             state.addedGamesToCart = state.addedGamesToCart.filter(gm => gm.game.id !== gameId);
             const newState = state.addedGamesToCart.map(gm => gm.totalPrice).reduce((a, b) => a + b, 0);
             state.totalPrice = newState;
+            console.log('removed',newState  - (newState * 0.2))
+            state.totalDiscountPrice = newState - (newState * 0.2);
         },
         isGameAlredyInCartHandleClose(state) {
             state.gameAlreadyInCart = false;
@@ -47,6 +50,7 @@ const cartSlice = createSlice({
             state.addedGamesToCart[existingCartItemIndex].totalPrice = gameTotalPrice;
             const newState = state.addedGamesToCart.map(gm => gm.totalPrice).reduce((a, b) => a + b, 0);
             state.totalPrice = newState;
+            state.totalDiscountPrice = newState - (newState * 0.2);
         },
         decreaseGameQuantityHandler(state, { payload: game }) {
             const existingCartItemIndex = state.addedGamesToCart.findIndex(gm => gm.game.id === game.game.id);
@@ -56,6 +60,7 @@ const cartSlice = createSlice({
                 state.addedGamesToCart[existingCartItemIndex].totalPrice = gameTotalPrice;
                 const newState = state.addedGamesToCart.map(gm => gm.totalPrice).reduce((a, b) => a + b, 0);
                 state.totalPrice = newState;
+                state.totalDiscountPrice = newState - (newState * 0.2);
             }
         },
         discountHandler(state) {
@@ -81,6 +86,10 @@ const cartSlice = createSlice({
             state.activePaymentStep = 0;
             state.userInfoPaymentDetails = [];
             state.cartPaymentDetails = [];
+            state.isDiscountApplied = false;
+        },
+        setAppliedDiscount(state){
+            state.isDiscountApplied = true;
         }
     },
 });

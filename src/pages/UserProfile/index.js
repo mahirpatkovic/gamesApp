@@ -15,6 +15,10 @@ function UserProfile() {
         email: '',
         username: '',
     })
+    const [tmpUserValues, setTmpUserValues] = useState({
+        email: '',
+        username: '',
+    })
     const [passwordValues, setPasswordValues] = useState({
         newPassword: '',
         repNewPassword: '',
@@ -31,6 +35,7 @@ function UserProfile() {
                 .then(res => {
                     dispatch(authActions.setUser(res.data));
                     setUserValues({ email: res.data.email, username: res.data.displayName })
+                    setTmpUserValues({email: res.data.email, username: res.data.displayName})
                 })
         }
     }, []);
@@ -69,7 +74,6 @@ function UserProfile() {
                         icon: <Icon name='check circle outline' />,
                     });
                     setPasswordValues({
-                        oldPassword: '',
                         newPassword: '',
                         repNewPassword: '',
                     })
@@ -90,11 +94,36 @@ function UserProfile() {
 
     const updateProfileHandler = () => {
         const userToken = localStorage.getItem('userToken');
-        // let newUserToken = ''
-        axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyCrEB1r3iKHWXKZ53Cz-7G7uUpwOjoF2yM`, { idToken: userToken, displayName: userValues.username, email: userValues.email })
+
+        axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyCrEB1r3iKHWXKZ53Cz-7G7uUpwOjoF2yM`, { idToken: userToken, displayName: userValues.username, email: userValues.email, returnSecureToken: true })
             .then(res => {
                 localStorage.removeItem('userToken');
                 localStorage.setItem('userToken', res.data.idToken);
+                dispatch(authActions.setUserDetails(res.data));
+                axios.get(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/userDetails.json`)
+                    .then(res => {
+                        for (let key in res.data) {
+                            if (res.data[key].authDetails.email === tmpUserValues.email || res.data[key].authDetails.username === tmpUserValues.username) {
+                                const tmpUserDetails = {
+                                    authDetails: {
+                                        email: userValues.email,
+                                        username: userValues.username
+                                    },
+                                    userValues: {
+                                        address: res.data[key].userValues.address,
+                                        isAdmin: res.data[key].userValues.isAdmin,
+                                        phone: res.data[key].userValues.phone,
+                                        isSuperAdmin: res.data[key].userValues.isSuperAdmin,
+                                    }
+                                }
+                                axios.put(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/userDetails/${key}.json`, tmpUserDetails)
+                                    .then(() => {
+                                        localStorage.clear();
+                                        dispatch(authActions.logout());
+                                    })
+                            }
+                        }
+                    })
                 notification.open({
                     message: `Profile Updated`,
                     icon: <Icon name='check circle outline' />,
