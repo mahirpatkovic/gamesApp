@@ -10,9 +10,9 @@ import { NavLink, useHistory } from 'react-router-dom';
 import LoginModal from '../LoginModal';
 import SignupModal from '../SignupModal';
 import PersonIcon from '@material-ui/icons/Person';
-import logo from './logo.png';
-import logo2 from './logo2.png';
-import navBox from './navBox.png'
+import logo from '../../assets/logo.png';
+import logo2 from '../../assets/logo2.png';
+import navBox from '../../assets/navBox.png';
 import './style.css';
 import { useDispatch, useSelector } from 'react-redux';
 import Snackbar from "@material-ui/core/Snackbar";
@@ -72,6 +72,8 @@ const useStyles = makeStyles((theme) => ({
         zIndex: 3,
         marginTop: '2rem',
         marginRight: '13rem',
+        textTransform: 'none',
+        fontSize: '14px',
         '@media (min-width: 1024px) and (max-width: 1350px)': {
             marginRight: '2rem'
         },
@@ -317,15 +319,12 @@ function NavigationBar(props) {
                             </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink
-                                exact
-                                to="/about"
-                                activeClassName="active"
-                                className="nav-links"
-                                onClick={handleClick}
-                            >
+                            <p className="nav-links" onClick={() => window.scrollTo({
+                                top: document.documentElement.scrollHeight,
+                                behavior: 'smooth'
+                            })}>
                                 About
-                            </NavLink>
+                            </p>
                         </li>
                         <li className="nav-item">
                             <NavLink
@@ -339,15 +338,12 @@ function NavigationBar(props) {
                             </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink
-                                exact
-                                to="/contact"
-                                activeClassName="active"
-                                className="nav-links"
-                                onClick={handleClick}
-                            >
+                            <p className="nav-links" onClick={() => window.scrollTo({
+                                top: document.documentElement.scrollHeight,
+                                behavior: 'smooth'
+                            })}>
                                 Contact
-                            </NavLink>
+                            </p>
                         </li>
                         {(isUserLoggedIn && isUserAdmin) && <li className="nav-item">
                             <NavLink

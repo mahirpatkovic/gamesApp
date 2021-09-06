@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import HomeSlider from "../../components/HomeSlider";
 import GameItem from '../../components/GameItem';
 import WaveHomeUp from '../../components/WaveHomeUp';
-import WaveHomeDown from '../../components/WaveHomeDown';
 
 import Loader from '../../components/Loader';
 import './style.css';
@@ -28,9 +27,6 @@ function Home() {
                 </div>
                 <div className="gameItems">
                     <GameItem />
-                </div>
-                <div style={{ marginTop: -370 }}>
-                    <WaveHomeDown />
                 </div>
             </div>}
         </div>

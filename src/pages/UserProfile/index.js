@@ -209,7 +209,6 @@ function UserProfile() {
                     <Button secondary onClick={updateProfileHandler} disabled={isDisabled} style={{ marginTop: 20 }}>Update profile</Button>
                 </Grid.Column>
             </div>
-
         </div>
     )
 }

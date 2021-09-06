@@ -101,12 +101,43 @@
         font-size: 20px;
     }
 } */
-.homePicture{
+
+.homeTop{
+    margin-top: 100px;
+    height: 400px;
     width: 100%;
     background-color: black;
 }
-.homePicture img{
-    margin-left: 30%;
+.nfsPicHomePg img{
+    width: 75%;
+    border-radius: 10px;
+    background: linear-gradient(145deg, #ffcf07, #e6ae06);
+    margin-left: 14%;
+    margin-top: 1%;
+}
+@media (min-width: 1500px) and (max-width: 1700px){
+    .nfsPicHomePg img{
+        width: 80%;
+        margin-top: 2%;
+    }
+}
+@media (min-width: 1300px) and (max-width: 1500px){
+    .nfsPicHomePg img{
+        width: 80%;
+        margin-top: 5%;
+    }
+}
+@media (min-width: 1100px) and (max-width: 1300px){
+    .nfsPicHomePg img{
+        width: 80%;
+        margin-top: 7%;
+    }
+}
+@media (min-width: 1024px) and (max-width: 1100px){
+    .nfsPicHomePg img{
+        width: 80%;
+        margin-top: 10%;
+    }
 }
 
 .readMore{
@@ -274,13 +305,24 @@
         color: #ffc107;
     }
 }
-
 .container {
     width: 100px;
-    top: 200px;
-    left: 650px;
-    position: absolute;
+    margin-top: -250px;
   }
+@media (min-width: 1300px) and (max-width: 1500px){
+    .container{
+        margin-top: -200px;
+    }
+}
+@media (min-width: 1024x) and (max-width: 1300px){
+    .container{
+        margin-top: 100px !important;
+    }
+    .pulse-button {
+        width: 70px;
+    height: 70px;
+    }
+}
   
   .pulse-button {
     z-index: 3;

@@ -7,15 +7,15 @@ import InfoIcon from '@material-ui/icons/Info';
 import StarIcon from '@material-ui/icons/Star';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import logo from './logo.png';
-import logo2 from './logo2.png';
+import logo from '../../assets/logo3.png';
+import logo2 from '../../assets/logo4.png';
 import { NavLink } from 'react-router-dom';
 import './style.css'
 
 function MenuDrawer(props) {
   const isUserLoggedIn = useSelector(state => state.auth.isAuthenticated);
   const isUserAdmin = useSelector(state => state.auth.isUserAdmin);
- 
+
   const list = () => (
     <div
       role="presentation"
@@ -34,11 +34,16 @@ function MenuDrawer(props) {
         </ListItem>
         <ListItem button key="2">
           <ListItemIcon>
-            <InfoIcon className="icon" />
+            <InfoIcon className="icon"/>
           </ListItemIcon>
-          <NavLink to='/about' style={{ textDecoration: "none", color: "black" }}>
+          <p onClick={() => window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth'
+          })}
+          style={{ marginBottom: 0 }}
+          >
             <ListItemText primary={<Typography variant="subtitle1" style={{ color: 'black', fontWeight: 'bold' }}>About</Typography>} />
-          </NavLink>
+          </p>
         </ListItem>
         <ListItem button key="3">
           <ListItemIcon>
@@ -50,11 +55,17 @@ function MenuDrawer(props) {
         </ListItem>
         <ListItem button key="4">
           <ListItemIcon>
-            <StarIcon className="icon" />
+            <StarIcon className="icon"
+            />
           </ListItemIcon>
-          <NavLink to='/contact' style={{ textDecoration: "none", color: "black" }} >
+          <p onClick={() => window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth'
+          })}
+          style={{ marginBottom: 0 }}
+          >
             <ListItemText primary={<Typography variant="subtitle1" style={{ color: 'black', fontWeight: 'bold' }}>Contact Us</Typography>} />
-          </NavLink>
+          </p>
         </ListItem>
         {(isUserLoggedIn && isUserAdmin) && <ListItem button key="5">
           <ListItemIcon>

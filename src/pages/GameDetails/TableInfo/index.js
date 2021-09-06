@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Col, Row } from 'antd';
-import { Header, Table, Icon } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
 
 function TableInfo(props) {
     return (

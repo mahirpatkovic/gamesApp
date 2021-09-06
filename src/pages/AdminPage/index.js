@@ -6,6 +6,7 @@ import DiscountCodes from './DiscountCodes';
 
 import { Divider } from 'semantic-ui-react'
 import AddGamesSection from './AddGamesSection';
+import ContactDetails from './ContactDetails';
 function AdminPage() {
     return (
         <div style={{ display: 'flex' }}>
@@ -23,7 +24,9 @@ function AdminPage() {
                     <Col xs={24} lg={12} xl={12}>
                         <AddGamesSection />
                     </Col>
-                    
+                    <Col xs={24} lg={12} xl={12}>
+                        <ContactDetails />
+                    </Col>
                 </Row>
             </div>
 

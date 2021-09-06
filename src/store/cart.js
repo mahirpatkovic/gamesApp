@@ -37,7 +37,6 @@ const cartSlice = createSlice({
             state.addedGamesToCart = state.addedGamesToCart.filter(gm => gm.game.id !== gameId);
             const newState = state.addedGamesToCart.map(gm => gm.totalPrice).reduce((a, b) => a + b, 0);
             state.totalPrice = newState;
-            console.log('removed',newState  - (newState * 0.2))
             state.totalDiscountPrice = newState - (newState * 0.2);
         },
         isGameAlredyInCartHandleClose(state) {

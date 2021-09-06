@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, Table } from 'semantic-ui-react'
+import { Icon } from 'semantic-ui-react'
 import { Card, Col, Row } from 'antd';
 
 function TableLanguageInfo(props) {

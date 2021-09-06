@@ -7,6 +7,7 @@ function Checkout() {
         <div style={{ display: 'flex' }}>
             <div className="checkoutPage">
                 <PaymentProgress />
+                <br/> <br/>
             </div>
         </div >
     )

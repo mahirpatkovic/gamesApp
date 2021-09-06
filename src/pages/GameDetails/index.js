@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loader from '../../components/Loader';
-import { Grid, Segment, Button, Icon, Label, Embed, ButtonGroup } from 'semantic-ui-react';
+import { Segment, Button, Icon, Label, Embed, ButtonGroup } from 'semantic-ui-react';
 import './style.css';
 import ImageSlider from "./ImageSlider";
 import TableInfo from "./TableInfo";
@@ -38,9 +38,7 @@ function GameDetails() {
     const isTabletBiggerSize = useMediaQuery({
         query: '(max-device-width: 1024px)'
     });
-    const isTabletSize = useMediaQuery({
-        query: '(max-device-width: 992px)'
-    });
+    
     useEffect(() => {
         setIsLoading(true);
         axios.get(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games.json`)
