@@ -89,9 +89,9 @@ function AddGameModal(props) {
 
     const inputChangeHandler = (e) => {
         const { id, value } = e.target;
-        if(id === 'price'){
+        if (id === 'price') {
             setGameDetails({ ...gameDetails, [id]: Number(value) });
-        }else{
+        } else {
             setGameDetails({ ...gameDetails, [id]: value });
         }
     }
@@ -113,6 +113,8 @@ function AddGameModal(props) {
                 case 'Subtitles':
                     setEnglishValues({ ...englishValues, subtitles: 'yes' })
                     break;
+                default:
+                    break;
             }
         }
     }
@@ -128,6 +130,8 @@ function AddGameModal(props) {
                     break;
                 case 'Subtitles':
                     setGermanValues({ ...germanValues, subtitles: 'yes' })
+                    break;
+                default:
                     break;
             }
         }
@@ -145,6 +149,8 @@ function AddGameModal(props) {
                 case 'Subtitles':
                     setPortugeseValues({ ...portugeseValues, subtitles: 'yes' })
                     break;
+                default:
+                    break;
             }
         }
     }
@@ -161,6 +167,8 @@ function AddGameModal(props) {
                 case 'Subtitles':
                     setSpanishValues({ ...spanishValues, subtitles: 'yes' })
                     break;
+                default:
+                    break;
             }
         }
     }
@@ -176,6 +184,8 @@ function AddGameModal(props) {
                     break;
                 case 'Subtitles':
                     setTurkishValues({ ...turkishValues, subtitles: 'yes' })
+                    break;
+                default:
                     break;
             }
         }
@@ -224,7 +234,6 @@ function AddGameModal(props) {
                 }
             }
         };
-
         axios.post(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games.json`, allGameDetails)
             .then(() => {
                 notification.open({
@@ -235,7 +244,7 @@ function AddGameModal(props) {
             .catch(err => {
                 console.error(err);
             })
-        
+
         props.onClose(allGameDetails, true);
     }
 

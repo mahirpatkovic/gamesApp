@@ -19,6 +19,10 @@ import Loader from "../components/Loader";
 import axios from 'axios';
 import { gamesActions } from "../store/games";
 import AdminPage from "../pages/AdminPage/index";
+import Footer from "../components/Footer";
+import logoToTop from '../assets/logo2.png';
+import './style.css';
+import { Icon } from "semantic-ui-react";
 
 function Dashboard() {
     const [isLoading, setIsLoading] = useState(false);
@@ -26,12 +30,13 @@ function Dashboard() {
     const cartGames = useSelector(state => state.cart.addedGamesToCart);
     const isUserAdmin = useSelector(state => state.auth.isUserAdmin)
     const dispatch = useDispatch();
+    const [isBackTopButtonVisible, setIsBackTopButtonVisible] = useState(false);
     useEffect(() => {
         setIsLoading(true);
         axios.get(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games.json`)
             .then(res => {
                 let transformedData = [];
-                for(let key in res.data){
+                for (let key in res.data) {
                     transformedData.push(res.data[key])
                 }
                 dispatch(gamesActions.fetchGames(transformedData));
@@ -41,17 +46,35 @@ function Dashboard() {
                 console.error(err);
             })
     }, []);
-    
-    useEffect(() => {
-        setIsLoading(false);
-    }, []);
+
+    // useEffect(() => {
+    //     setIsLoading(false);
+    // }, []);
 
     const handleLoaderShow = (isOpen) => {
         setIsLoading(isOpen);
     }
+    const toTopButtonVisibleHandler = () => {
+        const scrolled = document.documentElement.scrollTop;
+        if (scrolled > 300) {
+            setIsBackTopButtonVisible(true);
+        }
+        else if (scrolled <= 300) {
+            setIsBackTopButtonVisible(false)
+        }
+    };
+
+    const scrollToTopHandler = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+    window.addEventListener('scroll', toTopButtonVisibleHandler);
 
     return (
-        <div>
+        <div className='pageContainer'>
             <Router>
                 <NavigationBar onLoad={handleLoaderShow} />
 
@@ -75,7 +98,7 @@ function Dashboard() {
                         {!isUserLoggedIn ? <Home /> : <Games />}
                     </Route>
                     <Route path="/admin" exact>
-                        {(isUserLoggedIn && isUserAdmin) ?  <AdminPage /> : <Home />}
+                        {(isUserLoggedIn && isUserAdmin) ? <AdminPage /> : <Home />}
                     </Route>
                     <Route path="/:gameId" exact>
                         <GameDetails />
@@ -84,7 +107,11 @@ function Dashboard() {
                         <Redirect from='*' to='/' />
                     </Route>
                 </Switch>}
-
+                <Footer />
+                {isBackTopButtonVisible && <div className='backToTopBtn' onClick={scrollToTopHandler}>
+                    <img src={logoToTop} alt='MsGames'/>
+                    <Icon name='chevron circle up' color='yellow'/>
+                </div>}
             </Router>
         </div>
     );

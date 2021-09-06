@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '../../store/cart';
 import { makeStyles } from '@material-ui/core/styles';
@@ -89,86 +89,86 @@ function ShoppingCartHoverModal(props) {
     }
 
     return (
-            <Dialog
-                open={props.visible}
-                onClose={props.onClose}
-            >
-                <DialogTitle>
-                    <Divider horizontal>
-                        <Header as='h4'>
-                            <ShoppingCartIcon /> Shopping Cart
-                        </Header>
-                    </Divider>
+        <Dialog
+            open={props.visible}
+            onClose={props.onClose}
+        >
+            <DialogTitle>
+                <Divider horizontal>
+                    <Header as='h4'>
+                        <ShoppingCartIcon /> Shopping Cart
+                    </Header>
+                </Divider>
 
-                </DialogTitle>
-                <DialogContent >
-                    {cartGames.map(gm => {
-                        return <Card className={classes.root} key={gm.game.id}>
-                            <CardMedia
-                                className={classes.cover}
-                                image={gm.game.poster}
-                                title={gm.game.name}
-                            />
-                            <div className={classes.details}>
-                                <CardContent className={classes.content}>
-                                    <Typography component="h5" variant="h5">
-                                        {gm.game.name}
-                                    </Typography>
-                                    <Typography variant="subtitle1" color="textSecondary">
-                                        Price: <strong>{`${Number(gm.game.price).toFixed(2)} $`}</strong>
-                                    </Typography>
-                                    <Typography variant="subtitle1" color="textSecondary">
-                                        Total price: <strong>{`${Number(gm.totalPrice).toFixed(2)} $`}</strong>
-                                    </Typography>
-                                    <Typography variant="subtitle1" color="textSecondary">
-                                        Quantity: <strong>{gm.gameQuantity}</strong>
-                                    </Typography>
-                                    <ButtonGroup>
-                                        <Button
-                                            onClick={() => decreaseGameQuantityHandler(gm)}
-                                            aria-label="reduce"
-                                            size="small"
-                                        >
-                                            <RemoveIcon fontSize="small" />
-                                        </Button>
-                                        <Button
-                                            onClick={() => increaseGameQuantityHandler(gm)}
-                                            aria-label="increase"
-                                            size="small"
-                                        >
-                                            <AddIcon fontSize="small" />
-                                        </Button>
-                                    </ButtonGroup>
-                                </CardContent>
-                            </div>
-                            <ClearIcon
-                                onClick={() => removeGameFromCart(gm)}
-                                style={{ cursor: 'pointer', margin: '0px 0 0px auto' }} />
-                        </Card>
-                    })}
-                </DialogContent>
-                {isLoginAlertVisible && <Alert severity="warning">
-                    <AlertTitle>Warning</AlertTitle>
-                    Shop only available for members — <strong> Please register first !</strong>
-                </Alert>}
-                <Divider />
-                <Typography style={{ marginLeft: 20 }} variant="h6">
-                    Total: <strong>{totalPrice.toFixed(2)} $</strong>
-                </Typography>
-                <DialogActions style={{ marginTop: -35 }}>
-                    <Button autoFocus
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        onClick={checkoutProceedHandler}
-                    >
-                        Checkout
-                    </Button>
-                    <Button autoFocus onClick={props.onClose} variant="contained" size="small">
-                        Close
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            </DialogTitle>
+            <DialogContent >
+                {cartGames.map(gm => {
+                    return <Card className={classes.root} key={gm.game.id}>
+                        <CardMedia
+                            className={classes.cover}
+                            image={gm.game.poster}
+                            title={gm.game.name}
+                        />
+                        <div className={classes.details}>
+                            <CardContent className={classes.content}>
+                                <Typography component="h5" variant="h5">
+                                    {gm.game.name}
+                                </Typography>
+                                <Typography variant="subtitle1" color="textSecondary">
+                                    Price: <strong>{`${Number(gm.game.price).toFixed(2)} $`}</strong>
+                                </Typography>
+                                <Typography variant="subtitle1" color="textSecondary">
+                                    Total price: <strong>{`${Number(gm.totalPrice).toFixed(2)} $`}</strong>
+                                </Typography>
+                                <Typography variant="subtitle1" color="textSecondary">
+                                    Quantity: <strong>{gm.gameQuantity}</strong>
+                                </Typography>
+                                <ButtonGroup>
+                                    <Button
+                                        onClick={() => decreaseGameQuantityHandler(gm)}
+                                        aria-label="reduce"
+                                        size="small"
+                                    >
+                                        <RemoveIcon fontSize="small" />
+                                    </Button>
+                                    <Button
+                                        onClick={() => increaseGameQuantityHandler(gm)}
+                                        aria-label="increase"
+                                        size="small"
+                                    >
+                                        <AddIcon fontSize="small" />
+                                    </Button>
+                                </ButtonGroup>
+                            </CardContent>
+                        </div>
+                        <ClearIcon
+                            onClick={() => removeGameFromCart(gm)}
+                            style={{ cursor: 'pointer', margin: '0px 0 0px auto' }} />
+                    </Card>
+                })}
+            </DialogContent>
+            {isLoginAlertVisible && <Alert severity="warning">
+                <AlertTitle>Warning</AlertTitle>
+                Shop only available for members — <strong> Please register first !</strong>
+            </Alert>}
+            <Divider />
+            <Typography style={{ marginLeft: 20 }} variant="h6">
+                Total: <strong>{totalPrice.toFixed(2)} $</strong>
+            </Typography>
+            <DialogActions style={{ marginTop: -35 }}>
+                <Button autoFocus
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    onClick={checkoutProceedHandler}
+                >
+                    Checkout
+                </Button>
+                <Button autoFocus onClick={props.onClose} variant="contained" size="small">
+                    Close
+                </Button>
+            </DialogActions>
+        </Dialog>
     )
 }
 
