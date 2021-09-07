@@ -17,6 +17,7 @@ function AddGameModal(props) {
         poster: '',
         price: 0,
         releaseDate: '',
+        quantity: 0,
         trailer: '',
     });
     const [activeIndex, setActiveIndex] = useState(-1);
@@ -89,7 +90,7 @@ function AddGameModal(props) {
 
     const inputChangeHandler = (e) => {
         const { id, value } = e.target;
-        if (id === 'price') {
+        if (id === 'price' || id === 'quantity') {
             setGameDetails({ ...gameDetails, [id]: Number(value) });
         } else {
             setGameDetails({ ...gameDetails, [id]: value });
@@ -367,14 +368,20 @@ function AddGameModal(props) {
                                 onChange={inputChangeHandler} />
                         </Form.Field>
                         <Form.Field>
+                            <label>Quantity</label>
+                            <input
+                                id='quantity'
+                                placeholder='Quantity'
+                                onChange={inputChangeHandler} />
+                        </Form.Field>
+                    </Form.Group>
+                    <Form.Field>
                             <label>Trailer</label>
                             <input
                                 id='trailer'
                                 placeholder='Trailer'
                                 onChange={inputChangeHandler} />
                         </Form.Field>
-                    </Form.Group>
-
                 </Form>
                 <Accordion styled style={{ marginTop: 20, width: '100%' }}>
                     <Accordion.Title

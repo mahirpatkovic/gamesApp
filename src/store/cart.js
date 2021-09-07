@@ -44,12 +44,14 @@ const cartSlice = createSlice({
         },
         increaseGameQuantityHandler(state, { payload: game }) {
             const existingCartItemIndex = state.addedGamesToCart.findIndex(gm => gm.game.id === game.game.id);
-            state.addedGamesToCart[existingCartItemIndex].gameQuantity++;
-            const gameTotalPrice = state.addedGamesToCart[existingCartItemIndex].totalPrice = game.gameQuantity * game.game.price + game.game.price;
-            state.addedGamesToCart[existingCartItemIndex].totalPrice = gameTotalPrice;
-            const newState = state.addedGamesToCart.map(gm => gm.totalPrice).reduce((a, b) => a + b, 0);
-            state.totalPrice = newState;
-            state.totalDiscountPrice = newState - (newState * 0.2);
+            if (game.game.quantity > (game.gameQuantity)) {
+                state.addedGamesToCart[existingCartItemIndex].gameQuantity++;
+                const gameTotalPrice = state.addedGamesToCart[existingCartItemIndex].totalPrice = game.gameQuantity * game.game.price + game.game.price;
+                state.addedGamesToCart[existingCartItemIndex].totalPrice = gameTotalPrice;
+                const newState = state.addedGamesToCart.map(gm => gm.totalPrice).reduce((a, b) => a + b, 0);
+                state.totalPrice = newState;
+                state.totalDiscountPrice = newState - (newState * 0.2);
+            }
         },
         decreaseGameQuantityHandler(state, { payload: game }) {
             const existingCartItemIndex = state.addedGamesToCart.findIndex(gm => gm.game.id === game.game.id);
@@ -87,7 +89,7 @@ const cartSlice = createSlice({
             state.cartPaymentDetails = [];
             state.isDiscountApplied = false;
         },
-        setAppliedDiscount(state){
+        setAppliedDiscount(state) {
             state.isDiscountApplied = true;
         }
     },

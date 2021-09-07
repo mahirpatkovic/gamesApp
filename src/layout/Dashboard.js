@@ -2,7 +2,7 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Redirect
+    Redirect,
 } from "react-router-dom";
 import NavigationBar from "../components/NavigationBar";
 
@@ -26,18 +26,20 @@ import { Icon } from "semantic-ui-react";
 
 function Dashboard() {
     const [isLoading, setIsLoading] = useState(false);
+    const [isBackTopButtonVisible, setIsBackTopButtonVisible] = useState(false);
     const isUserLoggedIn = useSelector(state => state.auth.isAuthenticated);
     const cartGames = useSelector(state => state.cart.addedGamesToCart);
     const isUserAdmin = useSelector(state => state.auth.isUserAdmin)
     const dispatch = useDispatch();
-    const [isBackTopButtonVisible, setIsBackTopButtonVisible] = useState(false);
     useEffect(() => {
         setIsLoading(true);
         axios.get(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games.json`)
             .then(res => {
                 let transformedData = [];
+                let tempData = {};
                 for (let key in res.data) {
-                    transformedData.push(res.data[key])
+                    tempData = {...res.data[key], id: key };
+                    transformedData.push(tempData);
                 }
                 dispatch(gamesActions.fetchGames(transformedData));
                 setIsLoading(false);
@@ -109,8 +111,8 @@ function Dashboard() {
                 </Switch>}
                 <Footer />
                 {isBackTopButtonVisible && <div className='backToTopBtn' onClick={scrollToTopHandler}>
-                    <img src={logoToTop} alt='MsGames'/>
-                    <Icon name='chevron circle up' color='yellow'/>
+                    <img src={logoToTop} alt='MsGames' />
+                    <Icon name='chevron circle up' color='yellow' />
                 </div>}
             </Router>
         </div>

@@ -38,15 +38,15 @@ function GameDetails() {
     const isTabletBiggerSize = useMediaQuery({
         query: '(max-device-width: 1024px)'
     });
-    
+
     useEffect(() => {
         setIsLoading(true);
         axios.get(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games.json`)
             .then(res => {
                 for (let key in res.data) {
                     const gm = res.data[key];
-                    if (gm.id === gameId) {
-                        setGame(gm);
+                    if (key === gameId) {
+                        setGame({...gm, id: key});
                         setWinMinimum(gm.systemReqs.windows.minimum);
                         setWinRecommended(gm.systemReqs.windows.recommended);
                         setMacMinimum(gm.systemReqs.mac.minimum);
@@ -56,7 +56,7 @@ function GameDetails() {
                         setPortugese(gm.languages.Portugese);
                         setSpanish(gm.languages.Spanish);
                         setTurkish(gm.languages.Turkish)
-                        console.log("game", gm);
+                        console.log("game", {...gm, id: key});
                         setIsLoading(false);
                     }
                 }
@@ -70,6 +70,7 @@ function GameDetails() {
     const addGameToCartHandler = ({ game, gameQuantity }) => {
         dispatch(cartActions.addToCart({ game, gameQuantity }));
     }
+
     return (
         <div style={{ display: 'flex' }}>
             {isLoading ? <Loader /> : <div className="gameSinglePage">
@@ -93,7 +94,7 @@ function GameDetails() {
                     >
                         <Row>
                             <Col>
-                                <Button as='div' labelPosition='right' onClick={() => addGameToCartHandler({ game: game, gameQuantity })} >
+                                <Button as='div' labelPosition='right' onClick={() => addGameToCartHandler({ game: game, gameQuantity })} disabled={game.quantity === 0 ? true : false}>
                                     <Button color='black'>
                                         <Icon name='shop' />
                                     </Button>
@@ -119,11 +120,14 @@ function GameDetails() {
                                 </Button>
                                 <Button
                                     aria-label="increase"
-                                    onClick={() => setGameQuantity(gameQuantity + 1)}
+                                    onClick={() => (game.quantity > gameQuantity) && setGameQuantity(gameQuantity + 1)}
                                 >
                                     <AddIcon fontSize="small" />
                                 </Button>
                             </ButtonGroup>
+                        </Row>
+                        <Row>
+                            {game.quantity < 5 && (game.quantity > 0 ? <h4>Only {game.quantity} left in the stock. Hurry up!!!</h4> : <h4>Out of the stock. Try another time, or contact us to get the game</h4>)}
                         </Row>
                         <Segment>
                             <TableInfo game={game} />
@@ -169,7 +173,7 @@ function GameDetails() {
                         />
                     </Col>
                 </Row>
-                
+
                 <Row style={{ marginTop: 30 }} justify='center'>
                     <Col
                         xxl={{ span: 8, offset: 2 }}

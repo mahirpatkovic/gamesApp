@@ -5,12 +5,11 @@ import { Link } from 'react-router-dom';
 import { Icon, Card, Image } from 'semantic-ui-react';
 import './style.css';
 
-function GameItem() {
-    const games = useSelector(state => state.games.games);
+function GameItem(props) {
+    const game = props.game;
     return (
-        <div style={{ margin: '100px auto' }}>
-            <Card.Group itemsPerRow={3} stackable={true} doubling={true} centered>
-                {games.map(game => <Card key={game.id} className="card" style={{ width: 300 }}>
+        <div style={{ marginLeft: 10, marginRight: 10, marginTop: 50 }}>
+                <Card key={game.id} className="card" style={{ width: 300 }}>
                     <div className="game">
                         <Image src={game.poster} wrapped style={{ width: 300 }} />
                         <div className="gameOverlay"></div>
@@ -20,6 +19,7 @@ function GameItem() {
                         </div>
                     </div>
                     <Card.Content>
+
                         <Link to={`/${game.id}`} style={{ textDecoration: 'none' }}>
                             <Card.Header>
                                 <h3>
@@ -28,14 +28,17 @@ function GameItem() {
                             </Card.Header>
                         </Link>
                         <Card.Meta>
-                            <span className='date'><Icon name='tv' /> {game.platform}</span>
+                            <div>
+                                <span ><Icon name='tv' /> {game.platform}</span>
+                            </div>
                         </Card.Meta>
                     </Card.Content>
                     <Card.Content extra>
-                        <span className='date'><Icon name='tags' /> {game.genre}</span>
+                        <span style={{ float: 'left' }}><Icon name='tags' /> {game.genre}</span>
+                        <span style={{ float: 'right' }}><Icon name='dollar' /> {game.price.toFixed(2)}</span>
+
                     </Card.Content>
-                </Card>)}
-            </Card.Group>
+                </Card>
         </div>
     )
 }

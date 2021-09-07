@@ -55,7 +55,7 @@ function CommentSection(props) {
                 .then(res => {
                     for (let key in res.data) {
                         const game = res.data[key];
-                        if (game.id === props.gameId) {
+                        if (key === props.gameId) {
                             axios.post(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games/${key}/comments.json`, ({ ...newComment, user: currentUser.displayName }))
                                 .then(() => {
                                     setComments((prevState) => {

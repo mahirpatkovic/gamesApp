@@ -68,12 +68,31 @@ function PaymentDetails() {
         dispatch(cartActions.setActivePaymentOptionBack());
     }
     const finishPaymentHandler = () => {
-        axios.post(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/paymentDetails.json`, {paymentDetails: values, userDetails: userValues, gameDetails: gamesOrdered})
+
+        axios.post(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/paymentDetails.json`, { paymentDetails: values, userDetails: userValues, gameDetails: gamesOrdered })
             .then(() => {
+                axios.get(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games.json`)
+                    .then(res => {
+                        for (let key in res.data) {
+                            for (let gm of gamesOrdered) {
+                                if (gm.game.id === key) {
+                                    res.data[key].quantity = res.data[key].quantity - gm.gameQuantity;
+                                    axios.put(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games/${key}.json`, res.data[key])
+                                        .then(() => {
+                                            console.log(res.data[key]);
+                                        })
+                                        .catch(err => {
+                                            console.error(err);
+                                        })
+                                }
+                            }
+                        }
+                    })
                 notification.open({
                     message: 'Payment Successful',
                     icon: <Icon name='check circle outline' style={{ color: '#ffc107' }} />,
                 });
+
                 dispatch(cartActions.paymentCompleted());
                 history.push('/');
             })
