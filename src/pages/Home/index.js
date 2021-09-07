@@ -5,31 +5,32 @@ import WaveHomeUp from '../../components/WaveHomeUp';
 
 import Loader from '../../components/Loader';
 import './style.css';
+import { useSelector } from 'react-redux';
+import { Card } from 'semantic-ui-react';
+
 function Home() {
     const [isLoading, setIsLoading] = useState(false);
-    useEffect(() => {
-        let startTime = new Date().getTime();
-        let interval = setInterval(() => {
-            setIsLoading(true);
-            if (new Date().getTime() - startTime > 500) {
-                setIsLoading(false);
-                clearInterval(interval);
-                return;
-            }
-        }, 0);
-    }, []);
+    const games = useSelector(state => state.games.games);
+
     return (
         <div>
-            {isLoading ? <Loader /> : <div>
+            <div>
                 <HomeSlider />
                 <div style={{ marginTop: 0 }}>
                     <WaveHomeUp />
                 </div>
                 <div className="gameItems">
-                    <GameItem />
+                    <Card.Group itemsPerRow={3} stackable={true} doubling={true} centered style={{ margin: '50px auto' }}>
+                        {games.slice(0, 5).map((game, index) =>
+                            <GameItem
+                                game={game}
+                                key={index}
+                            />)}
+                    </Card.Group>
                 </div>
-            </div>}
-        </div>
+
+            </div>
+        </div >
     )
 }
 

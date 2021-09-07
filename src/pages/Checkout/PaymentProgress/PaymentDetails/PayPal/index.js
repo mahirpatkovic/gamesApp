@@ -48,6 +48,23 @@ function PayPal() {
                     const order = await actions.order.capture();
                     axios.post(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/paymentDetails.json`, { paypalDetails: order.purchase_units, userDetails: user, gameDetails: orderedGames })
                         .then(() => {
+                            axios.get(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games.json`)
+                                .then(res => {
+                                    for (let key in res.data) {
+                                        for (let gm of orderedGames) {
+                                            if (gm.game.id === key) {
+                                                res.data[key].quantity = res.data[key].quantity - gm.gameQuantity;
+                                                axios.put(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games/${key}.json`, res.data[key])
+                                                    .then(() => {
+                                                        console.log(res.data[key]);
+                                                    })
+                                                    .catch(err => {
+                                                        console.error(err);
+                                                    })
+                                            }
+                                        }
+                                    }
+                                })
                             notification.open({
                                 message: 'Payment Successful',
                                 icon: <Icon name='check circle outline' style={{ color: '#ffc107' }} />,
@@ -59,7 +76,7 @@ function PayPal() {
                         .catch(err => {
                             console.error(err);
                         })
-                    console.log(order);
+                    // console.log(order);
                 },
                 onError: (err) => {
                     console.log(err);

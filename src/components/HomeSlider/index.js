@@ -28,7 +28,7 @@ function HomeSlider(props) {
     }
 
     const openGameHandler = () => {
-        history.push('/g3')
+        history.push('/g3');
     }
 
     return (
