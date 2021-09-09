@@ -110,7 +110,7 @@ function NavigationBar(props) {
     const [openMenu, setOpenMenu] = useState(null);
     const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
     const [isSignupModalVisible, setIsSignupModalVisible] = useState(false);
-    const [isAlertVisible, setIsAlertVisible] = useState(false);
+    // const [isAlertVisible, setIsAlertVisible] = useState(false);
     const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
     const [click, setClick] = useState(false);
     const [isShoppingCartModalVisible, setIsShoppingCartModalVisible] = useState(false);
@@ -144,14 +144,14 @@ function NavigationBar(props) {
     const handleClick = () => {
         setClick(true);
     }
-    const handleClickGames = () => {
-        if (isUserLoggedIn) {
-            setClick(true);
-        } else {
-            history.push('/');
-            setIsAlertVisible(true);
-        }
-    }
+    // const handleClickGames = () => {
+    //     if (isUserLoggedIn) {
+    //         setClick(true);
+    //     } else {
+    //         history.push('/');
+    //         setIsAlertVisible(true);
+    //     }
+    // }
     const openDrawerHandler = () => {
         setIsDrawerOpen(true);
     }
@@ -189,9 +189,9 @@ function NavigationBar(props) {
         history.push('/user-profile');
         closeMenuHandler();
     }
-    const handleCloseNotification = () => {
-        setIsAlertVisible(false);
-    }
+    // const handleCloseNotification = () => {
+    //     setIsAlertVisible(false);
+    // }
 
     const openLogoutModalHandler = () => {
         setIsLogoutModalVisible(true);
@@ -272,7 +272,7 @@ function NavigationBar(props) {
         <div className="navMaster">
             {isDesktopOrLaptop ? <nav className="navbar">
                 <div className="navBox"><img alt="navBox" src={navBox} /></div>
-                <Snackbar
+                {/* <Snackbar
                     open={isAlertVisible}
                     autoHideDuration={3000}
                     onClose={handleCloseNotification}
@@ -286,7 +286,7 @@ function NavigationBar(props) {
                         Accessing Games Page only for users!
                         Please Register!
                     </Alert>
-                </Snackbar>
+                </Snackbar> */}
                 {isGameAlreadyInCart && <Snackbar
                     open={isGameAlreadyInCart}
                     autoHideDuration={3000}
@@ -332,7 +332,7 @@ function NavigationBar(props) {
                                 to="/games"
                                 activeClassName="active"
                                 className="nav-links"
-                                onClick={handleClickGames}
+                                onClick={handleClick}
                             >
                                 Games
                             </NavLink>

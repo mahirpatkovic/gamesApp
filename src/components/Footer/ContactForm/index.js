@@ -27,7 +27,7 @@ function ContactForm() {
     }
 
     const sumbitFormHandler = () => {
-        console.log(values);
+        // console.log(values);
         axios.post(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/contactDetails.json`, values)
             .then(() => {
                 notification.open({

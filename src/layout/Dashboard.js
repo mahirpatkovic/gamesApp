@@ -9,7 +9,7 @@ import NavigationBar from "../components/NavigationBar";
 import Home from '../pages/Home/index';
 import About from '../pages/About';
 import UserProfile from '../pages/UserProfile/index';
-import Games from "../pages/Games";
+import Games from "../pages/GamesPage/index";
 import { useDispatch, useSelector } from "react-redux";
 import GameDetails from '../pages/GameDetails/index';
 import Contact from "../pages/Contact";
@@ -48,10 +48,6 @@ function Dashboard() {
                 console.error(err);
             })
     }, []);
-
-    // useEffect(() => {
-    //     setIsLoading(false);
-    // }, []);
 
     const handleLoaderShow = (isOpen) => {
         setIsLoading(isOpen);
@@ -97,7 +93,7 @@ function Dashboard() {
                         {cartGames.length > 0 ? <Checkout /> : <Home />}
                     </Route>
                     <Route path="/games" exact>
-                        {!isUserLoggedIn ? <Home /> : <Games />}
+                        <Games />
                     </Route>
                     <Route path="/admin" exact>
                         {(isUserLoggedIn && isUserAdmin) ? <AdminPage /> : <Home />}
