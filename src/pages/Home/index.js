@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import HomeSlider from "../../components/HomeSlider";
 import GameItem from '../../components/GameItem';
 import WaveHomeUp from '../../components/WaveHomeUp';
 
-import Loader from '../../components/Loader';
 import './style.css';
 import { useSelector } from 'react-redux';
 import { Card } from 'semantic-ui-react';
 
 function Home() {
-    const [isLoading, setIsLoading] = useState(false);
     const games = useSelector(state => state.games.games);
 
     return (
