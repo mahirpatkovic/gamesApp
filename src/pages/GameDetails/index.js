@@ -56,7 +56,7 @@ function GameDetails() {
                         setPortugese(gm.languages.Portugese);
                         setSpanish(gm.languages.Spanish);
                         setTurkish(gm.languages.Turkish)
-                        console.log("game", {...gm, id: key});
+                        // console.log("game", {...gm, id: key});
                         setIsLoading(false);
                     }
                 }

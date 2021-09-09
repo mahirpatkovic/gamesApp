@@ -64,7 +64,7 @@ function MenuDrawer(props) {
           })}
           style={{ marginBottom: 0 }}
           >
-            <ListItemText primary={<Typography variant="subtitle1" style={{ color: 'black', fontWeight: 'bold' }}>Contact Us</Typography>} />
+            <ListItemText primary={<Typography variant="subtitle1" style={{ color: 'black', fontWeight: 'bold' }}>Contact</Typography>} />
           </p>
         </ListItem>
         {(isUserLoggedIn && isUserAdmin) && <ListItem button key="5">

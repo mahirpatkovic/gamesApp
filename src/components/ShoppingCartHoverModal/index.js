@@ -76,7 +76,7 @@ function ShoppingCartHoverModal(props) {
 
     const checkoutProceedHandler = () => {
         if (isUserLoggedIn) {
-            console.log("Checkout", cartGames);
+            // console.log("Checkout", cartGames);
             history.push('/checkout');
             props.onClose();
         } else {

@@ -17,7 +17,7 @@ function App() {
         .then(res => {
           dispatch(authActions.login());
           dispatch(authActions.setUser(res.data));
-          console.log(res.data);
+          // console.log(res.data);
           setIsLoading(false);
           axios.get(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/userDetails.json`)
             .then(rs => {

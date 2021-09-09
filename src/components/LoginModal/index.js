@@ -8,7 +8,7 @@ import { authActions } from '../../store/auth';
 import axios from 'axios';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import { notification } from 'antd';
-import { Image } from 'semantic-ui-react';
+import { Image, Icon } from 'semantic-ui-react';
 import logo from './logo.png';
 
 const useStyles = makeStyles((theme) => ({
@@ -96,7 +96,10 @@ function LoginModal(props) {
     const resetPasswordHandler = () => {
         axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyCrEB1r3iKHWXKZ53Cz-7G7uUpwOjoF2yM`, { requestType: "PASSWORD_RESET", email: values.email })
             .then(() => {
-                console.log('Email sent')
+                notification.open({
+                    message: `Email sent`,
+                    icon: <Icon name='check circle outline' />,
+                });
             })
             .catch(err => {
                 console.error(err)

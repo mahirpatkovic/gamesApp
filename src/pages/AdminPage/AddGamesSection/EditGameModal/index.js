@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Modal, Button, Form, Radio, Input, Label, Icon } from 'semantic-ui-react';
 import { notification, Popconfirm } from 'antd';
 
@@ -7,9 +7,9 @@ function EditGameModal(props) {
     const [isDisabled, setIsDisabled] = useState(true);
     const [gameValues, setGameValues] = useState(props.selected)
 
-    useEffect(() => {
-        console.log(props.selected)
-    }, []);
+    // useEffect(() => {
+    //     console.log(props.selected)
+    // }, []);
     const enableEditHandler = (e, value) => {
         if (value.checked === true) {
             setIsDisabled(false);

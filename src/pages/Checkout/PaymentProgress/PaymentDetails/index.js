@@ -79,7 +79,6 @@ function PaymentDetails() {
                                     res.data[key].quantity = res.data[key].quantity - gm.gameQuantity;
                                     axios.put(`https://gamesapp-f22ad-default-rtdb.europe-west1.firebasedatabase.app/games/${key}.json`, res.data[key])
                                         .then(() => {
-                                            console.log(res.data[key]);
                                         })
                                         .catch(err => {
                                             console.error(err);
